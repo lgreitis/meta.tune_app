@@ -9,7 +9,7 @@ export default function Room({ pressHandler, item, toggleFavorite }) {
     <TouchableOpacity onPress={() => pressHandler(item.key)}>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image source={require('../hqdefault.jpg')} style={styles.image}/>
+          <Image source={{uri: item.url}} style={styles.image}/>
         </View>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{item.roomName}</Text>
@@ -44,19 +44,17 @@ const styles = StyleSheet.create({
       marginHorizontal: 10,
       marginBottom: 20,
       borderRadius: 20,
-      height: win.height * 0.25,
       width: win.width * 0.42,
-
+      borderWidth: 1,
+      borderColor: 'black',
+      flex: 1,
     },
     image:{
-       //width: 176,
-       height: 96,
-       width: 'auto',
-
-      
+      height: 96,
+      width: 'auto',
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
-
+      flex: 1,
     },
     imageContainer: 
     {
@@ -64,14 +62,17 @@ const styles = StyleSheet.create({
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       overflow: 'hidden',
+      flex: 1,
     },
     title:{
       color: 'white',
-      fontSize: 20
+      fontSize: 17,
     },
     titleContainer:{
       paddingTop: 10,
       paddingLeft: 15,
+      paddingRight: 12,
+      flex: 1,
     },
     viewsContainer:{
       flex: 1,

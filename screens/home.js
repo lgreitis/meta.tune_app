@@ -7,49 +7,49 @@ export default function Home() {
     const[rooms, setRooms] = useState (
         [
             {
-                imgUrl:'aa',
-                roomName:'Room1',
+                url:'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
+                roomName:'Lofi and chill',
                 viewersCount: 12,
                 favorite: false,
                 key: '1'
             },
             {
-                imgUrl:'a',
-                roomName:'Room2',
+                url:'https://img.youtube.com/vi/vQjiN8Qgs3c/hqdefault.jpg',
+                roomName:'Learning web sockets',
                 viewersCount: 54,
                 favorite: true,
                 key: '2'
             },
             {
-              imgUrl:'abc',
-              roomName:'Room3',
+              url:'https://img.youtube.com/vi/93ZU6j59wL4/hqdefault.jpg',
+              roomName:'Very very very very long name',
               viewersCount: 56,
               favorite: true,
               key: '3'
             },
             {
-              imgUrl:'abc',
-              roomName:'Room3',
+              url:'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
+              roomName:'AAAAAAAAAAAAAAAAAAAAAAAAAA',
               viewersCount: 56,
               favorite: true,
               key: '4'
             },
             {
-              imgUrl:'abc',
+              url:'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
               roomName:'Room3',
               viewersCount: 56,
               favorite: true,
               key: '5'
             },
             {
-              imgUrl:'abc',
+              url:'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
               roomName:'Room3',
               viewersCount: 56,
               favorite: true,
               key: '6'
             },
             {
-              imgUrl:'abc',
+              url:'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
               roomName:'Room3',
               viewersCount: 56,
               favorite: true,
@@ -83,7 +83,7 @@ export default function Home() {
         <View style={styles.buttonsContainer}>
 
           <Button 
-            onPress={() => console.log("search")} 
+            onPress={() => console.log("searchh")} 
             title='Search'
             backgroundColor= '#bf9dfe'
           />
@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 0,
     backgroundColor: '#43485b',
-    paddingTop: 0,
   },
   title: {
     color: '#f1f6f6',
@@ -150,7 +149,6 @@ const styles = StyleSheet.create({
   roomsList:{
       backgroundColor: '#272b36',
       alignItems: 'center',
-      flex: 0,
+      flex: 1,
   }
-  
 });
