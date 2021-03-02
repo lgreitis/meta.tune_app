@@ -30,33 +30,40 @@ export default function Home() {
             {
               url:'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
               roomName:'AAAAAAAAAAAAAAAAAAAAAAAAAA',
-              viewersCount: 56,
+              viewersCount: 120,
               favorite: true,
               key: '4'
             },
             {
               url:'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
               roomName:'Room3',
-              viewersCount: 56,
+              viewersCount: 3,
               favorite: true,
               key: '5'
             },
             {
               url:'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
               roomName:'Room3',
-              viewersCount: 56,
+              viewersCount: 5,
               favorite: true,
               key: '6'
             },
             {
               url:'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
               roomName:'Room3',
-              viewersCount: 56,
+              viewersCount: 6,
               favorite: true,
               key: '7'
             }
         ]
     )
+
+    const[showFavorites, setShowFavorites] = useState(
+      {
+        favorite: false
+      }
+    )
+
     const roomPressHandler = (key) =>
     {
         //TODO: implement
@@ -73,6 +80,42 @@ export default function Home() {
           else return room;
         }))
     }
+    const showRooms = () =>
+    {
+      if(!showFavorites.favorite)
+      {
+        //return rooms;
+        return [...rooms].sort((roomA, roomB) =>
+         (roomA.viewersCount > roomB.viewersCount)? -1 : 1);
+      }
+      else
+      {
+        return rooms.filter(room => room.favorite);
+      }
+
+    }
+    const showFavoritesHandler = () =>
+    {
+      setShowFavorites(
+        {
+          favorite: true
+        }
+      )
+    }
+    const exploreHandler = () =>
+    {
+      setShowFavorites(
+        {
+          favorite: false
+        }
+      )
+    }
+    const renderNoStateMessage = () =>
+    {
+      return(
+        <Text style={{color:'white'}}>{"No rooms :("}</Text>
+      )
+    }
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -83,13 +126,13 @@ export default function Home() {
         <View style={styles.buttonsContainer}>
 
           <Button 
-            onPress={() => console.log("searchh")} 
-            title='Search'
-            backgroundColor= '#bf9dfe'
+            onPress={exploreHandler} 
+            title='Explore'
+            backgroundColor= '#44495c'
           />
 
           <Button
-            onPress={() => console.log("favorites")} 
+            onPress={showFavoritesHandler} 
             title='Favorites' 
             backgroundColor= '#44495c'
           />     
@@ -97,18 +140,19 @@ export default function Home() {
 
         <View style={styles.roomsList}>
           <FlatList
-              data= {rooms}
+              data= {showRooms()}
               numColumns={2}
               horizontal={false}
-              renderItem={({ item }) => (
+              ListEmptyComponent={renderNoStateMessage()}
+              renderItem={({ item }) => 
+              (
             <Room 
               item={item} 
               pressHandler={() => roomPressHandler(item.key)}
               toggleFavorite={() => toggleFavorite(item.key, item.favorite)} 
               />
           )}
-          />
-          
+          />       
         </View> 
       </View>
       

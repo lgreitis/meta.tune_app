@@ -4,7 +4,6 @@ import {MaterialIcons} from '@expo/vector-icons';
 
 
 export default function Room({ pressHandler, item, toggleFavorite }) {
-  
   return (
     <TouchableOpacity onPress={() => pressHandler(item.key)}>
       <View style={styles.container}>
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
       borderRadius: 20,
       width: win.width * 0.42,
       borderWidth: 1,
-      borderColor: 'black',
+      borderColor: '#44475a',
       flex: 1,
     },
     image:{
