@@ -1,11 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Home from './screens/home'
+import LoginStack from './routes/loginStack'
+import HomeStack from './routes/homeStack'
 
-export default function App() {
+export default function App() 
+{
   return (
-    <Home />
+
+      <NavigationContainer>
+        {!false
+          ? <LoginStack />
+          : <HomeStack />
+        }
+      </NavigationContainer>
+
   );
 }
-

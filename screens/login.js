@@ -1,24 +1,19 @@
-import React, {useState} from 'react';
-import { StyleSheet, View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, {useState, useContext} from 'react';
+import { StyleSheet, View, Text, TextInput, Button, 
+  TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 export default function Login() {
-  const[username, setUsername] = useState(
-    {
-      username: ""
-    }
-  );
-  const[password, setPassword] = useState(
-    {
-      password: ""
-    }
-  );
+  const[username, setUsername] = useState('');
+  const[password, setPassword] = useState('');
 
   const changeHandlerUsername = (val) =>{
     setUsername(val);
   }
+
   const changeHandlerPassword = (val) =>{
     setPassword(val);
   }
+
   const getRooms = () =>
   {
     fetch('http://88.119.36.191:8888/api/rooms',
@@ -39,6 +34,7 @@ export default function Login() {
         console.log(error);
       });       
   }
+
   const submitHandler = () =>
   {
       let details = {
@@ -54,7 +50,7 @@ export default function Login() {
       }
       formBody = formBody.join("&");
 
-    fetch('http://88.119.36.191:8888/api/login',
+    fetch('http://meta-tune.herokuapp.com/api/login',
       {
         method: 'POST',
         headers: {
@@ -75,8 +71,7 @@ export default function Login() {
         // ...
       }).catch(error => {
         console.log(error);
-      });     
-      getRooms();       
+      });      
   }
 
   return (

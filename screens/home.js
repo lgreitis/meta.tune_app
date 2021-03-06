@@ -118,9 +118,9 @@ export default function Home() {
     }
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
           <Text style={styles.title}>Rooms</Text>
-      </View>
+      </View> */}
       
       <View style={styles.contentContainer}>
         <View style={styles.buttonsContainer}>
