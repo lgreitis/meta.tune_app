@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
 export default function Home({ route }) {
@@ -6,6 +6,11 @@ export default function Home({ route }) {
   return (
     <View style={styles.container}>
       <Text>{room.roomName}</Text>
+      <Text>{room.slug}</Text>
+      <Text>{room.url}</Text>
+      <Text>{room.desc}</Text>
+      <Text>{room.creator.name}</Text>
+      <Text>{room.key}</Text>
     </View>
   );
 }

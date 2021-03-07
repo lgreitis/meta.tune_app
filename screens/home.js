@@ -1,69 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import Room from '../components/room';
 import Button from '../components/button'
 import Header from '../components/header'
+import roomUtils from '../lib/roomUtils'
 
 export default function Home({ navigation }) {
-  const [rooms, setRooms] = useState(
-    [
-      {
-        url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
-        roomName: 'Lofi and chill',
-        viewersCount: 12,
-        favorite: false,
-        key: '1'
-      },
-      {
-        url: 'https://img.youtube.com/vi/vQjiN8Qgs3c/hqdefault.jpg',
-        roomName: 'Learning web sockets',
-        viewersCount: 54,
-        favorite: true,
-        key: '2'
-      },
-      {
-        url: 'https://img.youtube.com/vi/93ZU6j59wL4/hqdefault.jpg',
-        roomName: 'Very very very very long name',
-        viewersCount: 56,
-        favorite: true,
-        key: '3'
-      },
-      {
-        url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
-        roomName: 'AAAAAAAAAAAAAAAAAAAAAAAAAA',
-        viewersCount: 120,
-        favorite: true,
-        key: '4'
-      },
-      {
-        url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
-        roomName: 'Room3',
-        viewersCount: 3,
-        favorite: true,
-        key: '5'
-      },
-      {
-        url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
-        roomName: 'Room456',
-        viewersCount: 5,
-        favorite: true,
-        key: '6'
-      },
-      {
-        url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
-        roomName: 'Room579',
-        viewersCount: 6,
-        favorite: true,
-        key: '7'
-      }
-    ]
-  )
+  const [rooms, setRooms] = useState([])
 
   const [showFavorites, setShowFavorites] = useState(
     {
       favorite: false
     }
   )
+
+  useEffect(() =>
+  {
+    if(rooms !== null)
+    {
+      setRooms([]);
+      getRooms();
+    }
+    
+  }, []);
+
+  const getRooms = () => {
+    let key = 1;
+    roomUtils.getRooms((serverRooms) => {
+      serverRooms.map(room => {
+        addRoom(room, key);
+        key++;
+      })
+    })
+  }
+  const addRoom = (room, key) => {
+    setRooms(oldRooms => {
+      return [
+        {
+          key: key,
+          roomName: room.name,
+          url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
+          viewersCount: 12,
+          favorite: false,
+          slug: room.slug,
+          desc: room.desc,
+          motd: room.motd,
+          creator: room.creator,
+        },
+        ...oldRooms
+      ]
+    })
+  }
+
 
   const roomPressHandler = (key) => {
     console.log("room press id " + key);
@@ -79,13 +67,17 @@ export default function Home({ navigation }) {
   }
 
   const showRooms = () => {
-    if (!showFavorites.favorite) {
-      return [...rooms].sort((roomA, roomB) =>
-        (roomA.viewersCount > roomB.viewersCount) ? -1 : 1);
+    if(rooms.length > 0)
+    {
+      if (!showFavorites.favorite) {
+        return [...rooms].sort((roomA, roomB) =>
+          (roomA.viewersCount > roomB.viewersCount) ? -1 : 1);
+      }
+      else {
+        return rooms.filter(room => room.favorite);
+      }
     }
-    else {
-      return rooms.filter(room => room.favorite);
-    }
+    else return rooms;
   }
 
   const showFavoritesHandler = () => {
@@ -94,6 +86,7 @@ export default function Home({ navigation }) {
         favorite: true
       }
     )
+
   }
 
   const exploreHandler = () => {
@@ -102,6 +95,7 @@ export default function Home({ navigation }) {
         favorite: false
       }
     )
+    
   }
 
   const renderNoStateMessage = () => {
@@ -111,7 +105,7 @@ export default function Home({ navigation }) {
   }
   return (
     <View style={styles.container}>
-      <Header title='Home'/>
+      <Header title='Home' />
 
       <View style={styles.contentContainer}>
         <View style={styles.buttonsContainer}>
