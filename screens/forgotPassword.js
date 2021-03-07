@@ -29,6 +29,7 @@ export default function ForgotPassword() {
                         onChangeText={changeHandlerEmail}
                         placeholderTextColor='#6272a4'
                         value={username}
+                        color='white'
                     />
                 </View>
                 <Button

@@ -22,16 +22,18 @@ export default function Login() {
             onChangeText={setEmail}
             placeholderTextColor='#6272a4'
             value={email}
+            color='white'
           />
         </View>
         <View style={styles.textInput}>
           <TextInput
             placeholder='Password'
+            secureTextEntry={true}
             onChangeText={setPassword}
             placeholderTextColor='#6272a4'
             value={password}
-            textContentType='password'
-            secureTextEntry={false}
+            //textContentType='password'
+            color='white'
           />
         </View>
         <Button
