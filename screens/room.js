@@ -1,16 +1,19 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-export default function Home() {
+export default function Home({route}) {
+  const {room} = route.params;
   return (
     <View style={styles.container}>
-      <Text>Room screen</Text>
+      <Text>{room.roomName}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
+    padding: 25,
+    backgroundColor: '#43485b',
+    flex: 1,
   },
 });
