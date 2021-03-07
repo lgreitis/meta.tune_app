@@ -19,8 +19,8 @@ const HomeStack = () => {
             <Stack.Screen
                 name="Room"
                 component={Room}
-                options={{headerShown: false}}
-                
+                options={{ headerShown: false }}
+
 
             />
         </Stack.Navigator>

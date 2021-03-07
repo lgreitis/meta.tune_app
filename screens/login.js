@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { AuthContext } from "../App.js"
 import Button from '../components/button';
 
@@ -13,9 +13,9 @@ export default function Login() {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <Image
-          style={{width: 250, height: 250, alignSelf: 'center', }}
+          style={{ width: 250, height: 250, alignSelf: 'center', }}
           source={require('../Logo/Meta.Tunetransparent.png')}
-          />
+        />
         <View style={styles.textInput}>
           <TextInput
             placeholder='E-mail'
@@ -41,7 +41,7 @@ export default function Login() {
         />
         <View>
           <TouchableOpacity>
-          <Text style={styles.text}>Don't have an account? Sign up now!</Text>
+            <Text style={styles.text}>Don't have an account? Sign up now!</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: '#44475a',
     marginBottom: 10,
-    marginHorizontal: 10, 
+    marginHorizontal: 10,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 25,
   },
 
   text: {
-    color:'#6272a4',
+    color: '#6272a4',
     marginBottom: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,

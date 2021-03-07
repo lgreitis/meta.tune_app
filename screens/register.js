@@ -20,20 +20,20 @@ export default function Register() {
   const changeHandlerPassword = (val) => {
     setPassword(val);
   }
-  
+
   const submitHandler = () => {
     // let details = {
     //   'email': username,
     //   'password': password
-    };
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <Image
-          style={{width: 250, height: 250, alignSelf: 'center', }}
+          style={{ width: 250, height: 250, alignSelf: 'center', }}
           source={require('../Logo/Meta.Tunetransparent.png')}
-          />
+        />
         <View style={styles.textInput}>
           <TextInput
             placeholder='Username'
@@ -77,7 +77,7 @@ export default function Register() {
         />
         <View>
           <TouchableOpacity>
-          <Text style={styles.text}>Have an account? Log in!</Text>
+            <Text style={styles.text}>Have an account? Log in!</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -95,14 +95,14 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: '#44475a',
     marginBottom: 10,
-    marginHorizontal: 10, 
+    marginHorizontal: 10,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 25,
   },
 
   text: {
-    color:'#6272a4',
+    color: '#6272a4',
     marginBottom: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,

@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native
 import Room from '../components/room';
 import Button from '../components/button'
 
-export default function Home({navigation}) {
+export default function Home({ navigation }) {
   const [rooms, setRooms] = useState(
     [
       {
@@ -66,7 +66,7 @@ export default function Home({navigation}) {
 
   const roomPressHandler = (key) => {
     console.log("room press id " + key);
-    navigation.navigate('Room', {room: rooms.find(room => room.key == key)});
+    navigation.navigate('Room', { room: rooms.find(room => room.key == key) });
   }
   const toggleFavorite = (key, isFavorite) => {
     setRooms(rooms.map(room => {
@@ -165,12 +165,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonsContainer: {
-     height: 90,
-     flexDirection: 'row',
-     alignItems: 'center',
-     justifyContent: 'space-around',
-     paddingVertical: 20,
-     paddingHorizontal: 10,
+    height: 90,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
   },
   contentContainer: {
     flex: 1,
