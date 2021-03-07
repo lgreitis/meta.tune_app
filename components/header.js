@@ -17,16 +17,20 @@ export default function Header({ title, navigation }) {
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    height: '100%',
+    height: '13%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#43485b',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    paddingBottom: '2%',
   },
   headerText: {
     fontSize: 32,
     color: 'white',
     letterSpacing: 1,
+    fontWeight: 'bold',
   },
   icon: {
     position: 'absolute',

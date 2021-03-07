@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import Room from '../components/room';
 import Button from '../components/button'
+import Header from '../components/header'
 
 export default function Home({ navigation }) {
   const [rooms, setRooms] = useState(
@@ -110,9 +111,7 @@ export default function Home({ navigation }) {
   }
   return (
     <View style={styles.container}>
-      {/* <View style={styles.header}>
-          <Text style={styles.title}>Rooms</Text>
-      </View> */}
+      <Header title='Home'/>
 
       <View style={styles.contentContainer}>
         <View style={styles.buttonsContainer}>
