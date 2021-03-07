@@ -51,6 +51,11 @@ export default function App() {
         })
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signUp: async data => {
+        loginUtils.signUpHandler(data.username, data.email, data.password, data.password2, (res) => {
+          // TODO: go to login after this
+        })
+      },
     }),
     []
   );

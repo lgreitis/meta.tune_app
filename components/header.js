@@ -17,7 +17,7 @@ export default function Header({ title, navigation }) {
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    height: '13%',
+    height: '9%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

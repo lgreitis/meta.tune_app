@@ -1,32 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback, Keyboard, Touchable, TouchableOpacity } from 'react-native';
+import { AuthContext } from "../App.js"
 import Button from '../components/button';
 
 export default function Register({navigation}) {
-  const [username, setUsername] = useState(
-    {
-      username: ""
-    }
-  );
-  const [password, setPassword] = useState(
-    {
-      password: ""
-    }
-  );
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
 
-  const changeHandlerUsername = (val) => {
-    setUsername(val);
-  }
-  
-  const changeHandlerPassword = (val) => {
-    setPassword(val);
-  }
-  
-  const submitHandler = () => {
-    // let details = {
-    //   'email': username,
-    //   'password': password
-    };
+  const { signUp } = React.useContext(AuthContext);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -38,7 +21,7 @@ export default function Register({navigation}) {
         <View style={styles.textInput}>
           <TextInput
             placeholder='Username'
-            onChangeText={changeHandlerUsername}
+            onChangeText={setUsername}
             placeholderTextColor='#6272a4'
             value={username}
             color='white'
@@ -47,16 +30,16 @@ export default function Register({navigation}) {
         <View style={styles.textInput}>
           <TextInput
             placeholder='E-mail'
-            onChangeText={changeHandlerUsername}
+            onChangeText={setEmail}
             placeholderTextColor='#6272a4'
-            value={username}
+            value={email}
             color='white'
           />
         </View>
         <View style={styles.textInput}>
           <TextInput
             placeholder='Password'
-            onChangeText={changeHandlerPassword}
+            onChangeText={setPassword}
             placeholderTextColor='#6272a4'
             value={password}
             secureTextEntry={true}
@@ -66,16 +49,16 @@ export default function Register({navigation}) {
         <View style={styles.textInput}>
           <TextInput
             placeholder='Confirm password'
-            onChangeText={changeHandlerPassword}
+            onChangeText={setPassword2}
             placeholderTextColor='#6272a4'
-            value={password}
+            value={password2}
             secureTextEntry={true}
             color='white'
           />
         </View>
         <Button
-          onPress={submitHandler}
-          title='Login'
+          onPress={() => signUp({ email, username, password, password2 })}
+          title='Sign Up'
           backgroundColor='#bd93f9'
         />
         <View>
