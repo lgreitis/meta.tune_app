@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
+import { Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginStack from './routes/loginStack';
@@ -8,9 +8,7 @@ import loginUtils from './lib/loginUtils'
 
 export const AuthContext = React.createContext();
 
-const Stack = createStackNavigator();
-
-export default function App({ navigation }) {
+export default function App() {
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -58,16 +56,11 @@ export default function App({ navigation }) {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator>
           {state.userLoginInfo == null ? (
-            <Stack.Screen
-              name="LoginStack"
-              component={LoginStack}
-            />
+            <LoginStack />
           ) : (
-            <Stack.Screen name="HomeStack" component={HomeStack} />
+            <HomeStack />
           )}
-        </Stack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>
   );
