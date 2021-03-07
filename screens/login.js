@@ -1,26 +1,26 @@
-import React, {useState} from 'react';
-import { StyleSheet, View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback, Keyboard, Touchable, TouchableOpacity } from 'react-native';
+import Button from '../components/button';
 
 export default function Login() {
-  const[username, setUsername] = useState(
+  const [username, setUsername] = useState(
     {
       username: ""
     }
   );
-  const[password, setPassword] = useState(
+  const [password, setPassword] = useState(
     {
       password: ""
     }
   );
 
-  const changeHandlerUsername = (val) =>{
+  const changeHandlerUsername = (val) => {
     setUsername(val);
   }
-  const changeHandlerPassword = (val) =>{
+  const changeHandlerPassword = (val) => {
     setPassword(val);
   }
-  const getRooms = () =>
-  {
+  const getRooms = () => {
     fetch('http://88.119.36.191:8888/api/rooms',
       {
         method: 'GET'
@@ -37,22 +37,21 @@ export default function Login() {
         // ...
       }).catch(error => {
         console.log(error);
-      });       
+      });
   }
-  const submitHandler = () =>
-  {
-      let details = {
-        'email': username,
-        'password': password
-      };
+  const submitHandler = () => {
+    let details = {
+      'email': username,
+      'password': password
+    };
 
-      let formBody = [];
-      for (let property in details) {
-        let encodedKey = encodeURIComponent(property);
-        let encodedValue = encodeURIComponent(details[property]);
-        formBody.push(encodedKey + "=" + encodedValue);
-      }
-      formBody = formBody.join("&");
+    let formBody = [];
+    for (let property in details) {
+      let encodedKey = encodeURIComponent(property);
+      let encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
 
     fetch('http://88.119.36.191:8888/api/login',
       {
@@ -75,39 +74,45 @@ export default function Login() {
         // ...
       }).catch(error => {
         console.log(error);
-      });     
-      getRooms();       
+      });
+    getRooms();
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() =>Keyboard.dismiss()}>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <TextInput 
-          styles={styles.textInput}
-          placeholder='Username'
-          onChangeText={changeHandlerUsername}
-          placeholderTextColor='white'
-          value={username}
-          
-        />
-
-        <TextInput 
-          styles={styles.textInput}
-          placeholder='Password'
-          onChangeText={changeHandlerPassword}
-          placeholderTextColor='white'
-          value={password}
-          textContentType='password'
-          secureTextEntry={false}
-
-        />
-
-        <Button 
-          onPress={submitHandler} 
-          title='Login'
-          color='purple'
+        <Image
+          style={{width: 250, height: 250, alignSelf: 'center', }}
+          source={require('../Logo/Meta.Tunetransparent.png')}
           />
-
+        <View style={styles.textInput}>
+          <TextInput
+            placeholder='E-mail'
+            onChangeText={changeHandlerUsername}
+            placeholderTextColor='#6272a4'
+            value={username}
+          />
+        </View>
+        <View style={styles.textInput}>
+          <TextInput
+            placeholder='Password'
+            onChangeText={changeHandlerPassword}
+            placeholderTextColor='#6272a4'
+            value={password}
+            textContentType='password'
+            secureTextEntry={false}
+          />
+        </View>
+        <Button
+          onPress={submitHandler}
+          title='Login'
+          backgroundColor='#bd93f9'
+        />
+        <View>
+          <TouchableOpacity>
+          <Text style={styles.text}>Don't have an account? Sign up now!</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -115,16 +120,26 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
-    backgroundColor:'#43485b',
+    padding: 20,
+    backgroundColor: '#282a36',
     flex: 1,
     justifyContent: 'center',
   },
-  textInput:{
+  textInput: {
+    backgroundColor: '#44475a',
+    marginBottom: 10,
+    marginHorizontal: 10, 
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 25,
+  },
+
+  text: {
+    color:'#6272a4',
     marginBottom: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    borderBottomWidth: 5,
-    borderBottomColor: '#ddd',
-  },
+    borderRadius: 25,
+    alignSelf: 'center',
+  }
 });

@@ -18,17 +18,14 @@ export default function Button ({ onPress, title, backgroundColor})
       );
   }
 
-
-
   const styles = StyleSheet.create({
     appButtonContainer: {
-      width: 150,
       height: 50,
       borderRadius: 30,
-      paddingVertical: 10,
-      paddingHorizontal: 20,
       flex: 1,
+      maxHeight: 50,
       justifyContent: 'center',
+      paddingHorizontal: 10,
       marginHorizontal: 10,
     },
     appButtonText: {
