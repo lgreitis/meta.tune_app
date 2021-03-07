@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, 
 import { AuthContext } from "../App.js"
 import Button from '../components/button';
 
-export default function Login() {
+export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -42,7 +42,7 @@ export default function Login() {
           backgroundColor='#bd93f9'
         />
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Text style={styles.text}>Don't have an account? Sign up now!</Text>
           </TouchableOpacity>
         </View>

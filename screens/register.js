@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback, Keyboard, Touchable, TouchableOpacity } from 'react-native';
 import Button from '../components/button';
 
-export default function Register() {
+export default function Register({navigation}) {
   const [username, setUsername] = useState(
     {
       username: ""
@@ -79,7 +79,7 @@ export default function Register() {
           backgroundColor='#bd93f9'
         />
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.text}>Have an account? Log in!</Text>
           </TouchableOpacity>
         </View>
