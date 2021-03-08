@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback, Keyboard, Touchable, TouchableOpacity } from 'react-native';
 import { AuthContext } from "../App.js"
 import Button from '../components/button';
+import FlashMessage from "react-native-flash-message";
 
 export default function Register({navigation}) {
   const [email, setEmail] = useState('');
@@ -66,6 +67,7 @@ export default function Register({navigation}) {
           <Text style={styles.text}>Have an account? Log in!</Text>
           </TouchableOpacity>
         </View>
+        <FlashMessage position="top" />
       </View>
     </TouchableWithoutFeedback>
   );

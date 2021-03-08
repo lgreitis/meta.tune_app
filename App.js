@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginStack from './routes/loginStack';
 import HomeStack from './routes/homeStack'
 import loginUtils from './lib/loginUtils'
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 export const AuthContext = React.createContext();
 
@@ -52,8 +53,20 @@ export default function App() {
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signUp: async data => {
-        loginUtils.signUpHandler(data.username, data.email, data.password, data.password2, (res) => {
+        loginUtils.signUpHandler(data.username, data.email, data.password, data.password2, (res, status) => {
           // TODO: go to login after this
+          if(status === 201){
+            showMessage({
+              message: "Registered successfully",
+              type: "success",
+            });
+          }
+          if(status === 400){
+            showMessage({
+              message: "There was an error creating an account",
+              type: "danger",
+            });
+          }
         })
       },
     }),
