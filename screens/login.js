@@ -1,53 +1,58 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, Image, TouchableOpacity, StatusBar, KeyboardAvoidingView } from 'react-native';
 import { AuthContext } from "../App.js"
 import Button from '../components/button';
 
-export default function Login({navigation}) {
+export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const { signIn } = React.useContext(AuthContext);
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <Image
-          style={{ width: 250, height: 250, alignSelf: 'center', }}
-          source={require('../Logo/Meta.Tunetransparent.png')}
-        />
-        <View style={styles.textInput}>
-          <TextInput
-            placeholder='E-mail'
-            onChangeText={setEmail}
-            placeholderTextColor='#6272a4'
-            value={email}
-            color='white'
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.container}>
+          <Image
+            style={{ width: 250, height: 250, alignSelf: 'center', }}
+            source={require('../Logo/Meta.Tunetransparent.png')}
           />
-        </View>
-        <View style={styles.textInput}>
-          <TextInput
-            placeholder='Password'
-            secureTextEntry={true}
-            onChangeText={setPassword}
-            placeholderTextColor='#6272a4'
-            value={password}
-            //textContentType='password'
-            color='white'
+          <View style={styles.textInput}>
+            <TextInput
+              placeholder='E-mail'
+              onChangeText={setEmail}
+              placeholderTextColor='#6272a4'
+              value={email}
+              color='white'
+            />
+          </View>
+          <View style={styles.textInput}>
+            <TextInput
+              placeholder='Password'
+              secureTextEntry={true}
+              onChangeText={setPassword}
+              placeholderTextColor='#6272a4'
+              value={password}
+              //textContentType='password'
+              color='white'
+            />
+          </View>
+          <Button
+            onPress={() => signIn({ email, password })}
+            title='Login'
+            backgroundColor='#bd93f9'
           />
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <Text style={styles.text}>Don't have an account? Sign up now!</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <Button
-          onPress={() => signIn({ email, password })}
-          title='Login'
-          backgroundColor='#bd93f9'
-        />
-        <View>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.text}>Don't have an account? Sign up now!</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 

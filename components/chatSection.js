@@ -5,8 +5,6 @@ import Message from './message'
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
-
 export default function ChatSection({ room }) {
     const [messages, setMessages] = useState([
         {

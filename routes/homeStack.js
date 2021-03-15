@@ -20,8 +20,6 @@ const HomeStack = () => {
                 name="Room"
                 component={Room}
                 options={{ headerShown: false }}
-
-
             />
         </Stack.Navigator>
     );
