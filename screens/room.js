@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, BackHandler, Dimensions, KeyboardAvoidingView } from 'react-native';
 
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import PlayerSection from '../components/playerSection'
 import ChatSection from '../components/chatSection'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 
-export default function Room({ route }) {
+export default function Room({ route, navigation }) {
   const { room } = route.params;
 
   return (
@@ -16,9 +17,9 @@ export default function Room({ route }) {
       style={styles.container}
     >
       <View style={styles.header}>
-        <Ionicons name="arrow-back-outline" style={[styles.icon, styles.backIcon]} />
+        <MaterialIcons name="arrow-back" style={[styles.icon, styles.backIcon]} onPress={() =>navigation.goBack()}/>
         <Text style={styles.headerText}>{room.roomName}</Text>
-        <Ionicons name="menu-outline" style={[styles.icon, styles.menuIcon]} />
+        <MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={() => console.log('menu pressed')} />
       </View>
 
       <View style={styles.playerContainer}>
