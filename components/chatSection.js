@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, BackHandler, FlatList, TextInput, Dimensions, Keyboard } from 'react-native';
 import io from 'socket.io-client';
 import Message from './message'
@@ -46,43 +46,65 @@ export default function ChatSection({ room }) {
         },
     ])
     const [message, setMessage] = useState('')
+    const ref = useRef();
 
-    var socket = io("http://88.119.36.191:8888", {
-        query: {
-            slug: room.slug
-        },
-        transports: ["websocket"] // HTTP long-polling is disabled
-    });
+    useEffect(() =>
+    {
+        let socket = io("http://88.119.36.191:8888", {
+            query: {
+                slug: room.slug
+            },
+            transports: ["websocket"] // HTTP long-polling is disabled
+        });
 
+        socket.on('chat message', (content) => onMessage(content));
 
-    socket.on('chat message', (content) => {
-        console.log(content)
-    });
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', function () {
+            socket.disconnect()
+            console.log("socket disconnected");
+        });
 
-    BackHandler.addEventListener('hardwareBackPress', function () {
-        socket.disconnect()
-    });
+        ref.current = socket;
+
+        return () => backHandler.remove();
+    }, []);
+
+    const onMessage = (content) =>
+    {
+        console.log("new message from server")
+        addMessage(content);
+    }
+    
+    let key = messages.length;
+    const addMessage = (message) =>
+    {
+        key++;
+        console.log(key);
+        setMessages(prevMessages =>
+            {
+                return[
+                    {            
+                        user: message.user,
+                        text: message.text,
+                        key: key
+                    },
+                    ...prevMessages
+                ]
+            })
+
+        //console.log(messages);
+    }
 
     const sendMessage = () =>
     {
         if(message.length == 0)
             return;
-
         console.log(message);
-        Keyboard.dismiss();
-        let key = messages.length + 1;
-        setMessages(prevMessages => {
-            return [
-                {
-                    user: 'currentUser',
-                    text: message,
-                    key: key
-                },
-                ...prevMessages
-            ]
-        }
 
-        )
+        ref.current.emit('chat message', message)
+
+        //addMessage({user: 'testUser', text: message});
+        Keyboard.dismiss();
         setMessage('');
     }
     return (
