@@ -20,6 +20,12 @@ export default function Register({ navigation }) {
     let emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     let passwordRegExp = /[^*.!@#$%^&(){}[\]:;<>,.?/~_+-=|a-zA-Z0-9]+/
 
+    if(!username || !email || !password || !password2)
+    {
+      alert('Please fill out all fields');
+      return;
+    }
+
     if(username.length < 5)
     {
       alert("Name should be at least 5 characters");
@@ -144,9 +150,10 @@ export default function Register({ navigation }) {
               <Text style={styles.text}>Have an account? Log in!</Text>
             </TouchableOpacity>
           </View>
-          <FlashMessage position="top" />
+          
         </View>
       </TouchableWithoutFeedback>
+      <FlashMessage position="top" />
     </KeyboardAvoidingView>
   );
 }

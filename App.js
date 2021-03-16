@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StatusBar } from 'react-native';
+import { Button, Text, TextInput, View, StatusBar, Alert} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginStack from './routes/loginStack';
@@ -53,7 +53,7 @@ export default function App() {
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signUp: async data => {
-        loginUtils.signUpHandler(data.username, data.email, data.password, data.password2, (res, status) => {
+        loginUtils.signUpHandler(data.username, data.email, data.password, data.password2, (res, status, errorMsg) => {
           // TODO: go to login after this
           if(status === 201){
             showMessage({
@@ -62,16 +62,28 @@ export default function App() {
             });
           }
           if(status === 400){
-            showMessage({
-              message: "There was an error creating an account",
-              type: "danger",
-            });
+            // showMessage({
+            //   message: errorMsg,
+            //   type: "danger",
+            // });
+            alert(errorMsg);
           }
         })
       },
     }),
     []
   );
+  const alert = (message) =>
+  {
+    Alert.alert(
+      ":(",
+      message,
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
+  }
+ 
 
   return (
     <AuthContext.Provider value={authContext}>
