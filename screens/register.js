@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback, Keyboard, Touchable, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, Image, TextInput,
+   TouchableWithoutFeedback, Keyboard, Touchable, 
+   TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
 import { AuthContext } from "../App.js"
 import Button from '../components/button';
 import FlashMessage from "react-native-flash-message";
@@ -11,6 +13,73 @@ export default function Register({ navigation }) {
   const [password2, setPassword2] = useState('');
 
   const { signUp } = React.useContext(AuthContext);
+
+  const validation = () =>
+  {
+    let userNameRegExp = /\W+/
+    let emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    let passwordRegExp = /[^*.!@#$%^&(){}[\]:;<>,.?/~_+-=|a-zA-Z0-9]+/
+
+    if(username.length < 5)
+    {
+      alert("Name should be at least 5 characters");
+      return;
+    }
+    if(username.length > 32)
+    {
+      alert("Name should be no longer that 32 characters");
+      return;
+    }
+    if(userNameRegExp.test(username))
+    {
+      alert("Name contains illegal characters");
+      return;
+    }
+
+    if(!emailRegExp.test(email))
+    {
+      alert("Email is invalid");
+      return;
+    }
+
+    if(password.length < 6)
+    {
+      alert("Password should be at least 6 characters long");
+      return;
+    }
+    
+    if(password.length > 32)
+    {
+      alert("Password should be no longer than 32 characters");
+      return;
+    }
+
+    if(password != password2)
+    {
+      alert("Passwords don't match");
+      return;
+    }
+
+    if(passwordRegExp.test(password))
+    {
+      alert("Password contains illegal characters");
+      return;
+    }
+
+    console.log("validation passed");
+    signUp({ email, username, password, password2 })
+  }
+
+  const alert = (message) =>
+  {
+    Alert.alert(
+      ":(",
+      message,
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -30,6 +99,7 @@ export default function Register({ navigation }) {
               placeholderTextColor='#6272a4'
               value={username}
               color='white'
+              textContentType='username'
             />
           </View>
           <View style={styles.textInput}>
@@ -39,6 +109,7 @@ export default function Register({ navigation }) {
               placeholderTextColor='#6272a4'
               value={email}
               color='white'
+              textContentType='emailAddress'
             />
           </View>
           <View style={styles.textInput}>
@@ -49,6 +120,7 @@ export default function Register({ navigation }) {
               value={password}
               secureTextEntry={true}
               color='white'
+              textContentType='password'
             />
           </View>
           <View style={styles.textInput}>
@@ -59,10 +131,11 @@ export default function Register({ navigation }) {
               value={password2}
               secureTextEntry={true}
               color='white'
+              textContentType='password'
             />
           </View>
           <Button
-            onPress={() => signUp({ email, username, password, password2 })}
+            onPress={validation}
             title='Sign Up'
             backgroundColor='#bd93f9'
           />

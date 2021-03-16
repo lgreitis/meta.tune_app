@@ -27,6 +27,7 @@ export default function Login({ navigation }) {
               placeholderTextColor='#6272a4'
               value={email}
               color='white'
+              textContentType='emailAddress'
             />
           </View>
           <View style={styles.textInput}>
@@ -36,7 +37,7 @@ export default function Login({ navigation }) {
               onChangeText={setPassword}
               placeholderTextColor='#6272a4'
               value={password}
-              //textContentType='password'
+              textContentType='password'
               color='white'
             />
           </View>
