@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   playerContainer: {
     backgroundColor: '#33385b',
     flex: 0,
-    height: screenHeight * 0.35,
+    height: screenHeight * 0.42,
   },
   chatContainer: {
     backgroundColor: '#44485b',
