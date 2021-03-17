@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Button, Text, TextInput, View, StatusBar, Alert} from 'react-native';
+import {StatusBar, Alert} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import LoginStack from './routes/loginStack';
 import HomeStack from './routes/homeStack'
 import loginUtils from './lib/loginUtils'
