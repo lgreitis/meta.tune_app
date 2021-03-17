@@ -1,53 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, BackHandler, FlatList, TextInput, Dimensions, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TextInput, Dimensions, Keyboard } from 'react-native';
 import io from 'socket.io-client';
 import Message from './message'
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function ChatSection({ room }) {
+export default function ChatSection({ room, navigation }) {
     const [messages, setMessages] = useState([
-        {
-            user: 'user1',
-            text: 'message1',
-            key: 1,
-        },
-        {
-            user: 'user2',
-            text: 'message57864',
-            key: 2,
-        },
-        {
-            user: 'user3',
-            text: 'VERY VERY VERY LONG MESSAGE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa',
-            key: 3,
-        },
-        {
-            user: 'user4',
-            text: 'message3345754',
-            key: 4,
-        },
-        {
-            user: 'user9',
-            text: 'message3',
-            key: 5,
-        },
-        {
-            user: 'user9',
-            text: 'message3',
-            key: 6,
-        },
-        {
-            user: 'user9',
-            text: 'message3',
-            key: 7,
-        },
+
     ])
     const [message, setMessage] = useState('')
+
+    //socket
     const ref = useRef();
 
     useEffect(() =>
     {
+        //on component mount
         let socket = io("http://88.119.36.191:8888", {
             query: {
                 slug: room.slug
@@ -57,14 +26,13 @@ export default function ChatSection({ room }) {
 
         socket.on('chat message', (content) => onMessage(content));
 
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', function () {
-            socket.disconnect()
-            console.log("socket disconnected");
-        });
-
         ref.current = socket;
 
-        return () => backHandler.remove();
+        //on component dismount
+        return () => {
+            socket.disconnect();
+            console.log("socket disconnected");
+        }
     }, []);
 
     const onMessage = (content) =>
@@ -95,13 +63,9 @@ export default function ChatSection({ room }) {
 
     const sendMessage = () =>
     {
-        if(message.length == 0)
+        if(!message)
             return;
-        console.log(message);
-
         ref.current.emit('chat message', message)
-
-        //addMessage({user: 'testUser', text: message});
         Keyboard.dismiss();
         setMessage('');
     }

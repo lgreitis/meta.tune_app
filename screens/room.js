@@ -4,7 +4,6 @@ import { StyleSheet, View, Text, BackHandler, Dimensions, KeyboardAvoidingView }
 import { MaterialIcons } from '@expo/vector-icons';
 import PlayerSection from '../components/playerSection'
 import ChatSection from '../components/chatSection'
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 
@@ -17,7 +16,7 @@ export default function Room({ route, navigation }) {
       style={styles.container}
     >
       <View style={styles.header}>
-        <MaterialIcons name="arrow-back" style={[styles.icon, styles.backIcon]} onPress={() =>navigation.goBack()}/>
+        <MaterialIcons name="arrow-back" style={[styles.icon, styles.backIcon]} onPress={() => navigation.goBack()}/>
         <Text style={styles.headerText}>{room.roomName}</Text>
         <MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={() => console.log('menu pressed')} />
       </View>
