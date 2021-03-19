@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     height: screenHeight * 0.1,
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#43485b',
+    backgroundColor: '#474b53',
     alignItems: 'flex-end',
     paddingBottom: '2%',
   },
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   playerContainer: {
     backgroundColor: '#33385b',
     flex: 0,
-    height: screenHeight * 0.35,
+    height: screenHeight * 0.42,
   },
   chatContainer: {
     backgroundColor: '#44485b',
