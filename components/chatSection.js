@@ -69,6 +69,12 @@ export default function ChatSection({ room, navigation }) {
         Keyboard.dismiss();
         setMessage('');
     }
+
+    const renderNoStateMessage = () => {
+        return (
+          <Text style={styles.noStateMessage}>{"It's a little quiet in here..."}</Text>
+        )
+      }
     return (
         <View style={styles.container}>
             <View style={styles.chatContainer}>
@@ -81,6 +87,7 @@ export default function ChatSection({ room, navigation }) {
                     (
                         <Message message={item} />
                     )}
+                    ListEmptyComponent={renderNoStateMessage}
                 />
             </View>
             <View style={styles.inputContainer}>
@@ -90,7 +97,7 @@ export default function ChatSection({ room, navigation }) {
                     placeholderTextColor='#646c8d'
                     onChangeText={(val) => setMessage(val)}
                     onSubmitEditing={sendMessage}
-                    
+                    color='white'
                     value={message}
                 />
                     <TouchableOpacity onPress={sendMessage} containerStyle={styles.iconContainer}>
@@ -109,13 +116,16 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     chatContainer: {
-        backgroundColor: '#55585b',
+        backgroundColor: '#282a36',
         flex: 1,
         minWidth: 0,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderTopColor: '#474b53',
+        borderBottomColor: '#474b53',
     },
     inputContainer: {
         backgroundColor: '#272b36',
-        borderTopWidth: 1,
         flex: 0,
         height: 69,
         paddingHorizontal: 20,
@@ -140,5 +150,13 @@ const styles = StyleSheet.create({
         padding: 8,
         backgroundColor: '#bf9dfe',
         borderRadius: 43,  
+    },
+    noStateMessage:
+    {
+        color: 'white',
+        transform: [{scaleY: -1}],
+        fontSize: 15,
+        paddingLeft : 20,
+        paddingBottom : 15,
     }
 });

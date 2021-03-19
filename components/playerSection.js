@@ -1,14 +1,21 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import YoutubePlayer from "react-native-youtube-iframe";
+import {getYoutubeMeta} from 'react-native-youtube-iframe';
 
 export default function PlayerSection({ title, navigation }) {
   const [like, setLike] = useState(false);
   const [dislike, setDislike] = useState(false);
   const [addSong, setAddSong] = useState(false);
   const [name, setName] = useState('')
+  const [songId, setSongId] = useState('bhU_DEM-7Yc')
   const playerRef = useRef();
+  
+
+  getYoutubeMeta(songId).then(meta => {
+    setName(meta.title);
+  });
 
   const likePressHandler = () => {
     if (like == false) {
@@ -37,35 +44,40 @@ export default function PlayerSection({ title, navigation }) {
         <Text style={styles.songName}>{name}</Text>
         <Text style={styles.userName}>{"Sinsils"}</Text>
       </View>
-      <View style={styles.playerContainer}>
-        <YoutubePlayer
-          ref={playerRef}
-          height={300}
-          play={true}
-          initialPlayerParams={{
-            controls: false
-          }}
-          forceAndroidAutoplay
-          videoId={"jzD_yyEcp0M"}
-        />
-      </View>
+      
+        <View style={styles.playerContainer}>
+          <YoutubePlayer
+            ref={playerRef}
+            height={300}
+            play={true}
+            initialPlayerParams={{
+              controls: false,
+              preventFullScreen: true,
+              allowWebViewZoom: false
+            }}
+            forceAndroidAutoplay
+            videoId={songId}
+          />
+          <View style={styles.playerOverlay} />
+        </View>
+      
       <View style={styles.footerContainer}>
         <TouchableOpacity style={styles.likeIconContainer} onPress={likePressHandler}>
           {like
-            ? <MaterialIcons name='thumb-up' style={styles.icon} color='black' />
-            : <MaterialIcons name='thumb-up-off-alt' style={styles.icon} color='black' />
+            ? <MaterialIcons name='thumb-up' style={styles.icon} color='white' />
+            : <MaterialIcons name='thumb-up-off-alt' style={styles.icon} color='white' />
           }
         </TouchableOpacity>
         <TouchableOpacity style={styles.dislikeIconContainer} onPress={dislikePressHandler}>
           {dislike
-            ? <MaterialIcons name='thumb-down' style={styles.icon} color='black' />
-            : <MaterialIcons name='thumb-down-off-alt' style={styles.icon} color='black' />
+            ? <MaterialIcons name='thumb-down' style={styles.icon} color='white' />
+            : <MaterialIcons name='thumb-down-off-alt' style={styles.icon} color='white' />
           }
         </TouchableOpacity >
         <TouchableOpacity style={styles.addSongIconContainer} onPress={addSongPressHandler}>
           {addSong
-            ? <MaterialIcons name='star' style={styles.icon} color='black' />
-            : <MaterialIcons name='star-border' style={styles.icon} color='black' />
+            ? <MaterialIcons name='star' style={styles.icon} color='white' />
+            : <MaterialIcons name='star-border' style={styles.icon} color='white' />
           }
         </TouchableOpacity>
       </View>
@@ -77,18 +89,25 @@ export default function PlayerSection({ title, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'gray'
+    backgroundColor: '#44475a'
   },
   headerContainer: {
-    backgroundColor: '#ccc',
+    backgroundColor: '#282a36',
     height: '15%',
   },
   playerContainer: {
-    backgroundColor: '#bbb',
-    height: '70%'
+    backgroundColor: '#44475a',
+    height: '70%',
+  },
+  playerOverlay:
+  {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    zIndex: 100,
   },
   footerContainer: {
-    backgroundColor: '#eee',
+    backgroundColor: '#282a36',
     height: '15%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -105,6 +124,12 @@ const styles = StyleSheet.create({
   },
   addSongIconContainer: {
 
+  },
+  songName: {
+    color : 'white',
+  },
+  userName: {
+    color: 'white',
   },
 
 });

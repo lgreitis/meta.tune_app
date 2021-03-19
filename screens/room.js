@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     height: screenHeight * 0.1,
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#43485b',
+    backgroundColor: '#474b53',
     alignItems: 'flex-end',
     paddingBottom: '2%',
   },
