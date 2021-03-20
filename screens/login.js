@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, Image, TouchableOpacity, StatusBar, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback,
+   Keyboard, Image, TouchableOpacity, StatusBar, KeyboardAvoidingView, } from 'react-native';
 import { AuthContext } from "../App.js"
 import Button from '../components/button';
 
@@ -8,7 +9,7 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState('');
 
   const { signIn } = React.useContext(AuthContext);
-
+  
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}

@@ -10,47 +10,24 @@ export const AuthContext = React.createContext();
 
 export default function App() {
   StatusBar.setBarStyle('dark-contgen', true);
-
-  const [state, dispatch] = React.useReducer(
-    (prevState, action) => {
-      switch (action.type) {
-        case 'RESTORE_TOKEN':
-          return {
-            ...prevState,
-            userLoginInfo: action.loginInfo,
-            isLoading: false,
-          };
-        case 'SIGN_IN':
-          return {
-            ...prevState,
-            isSignout: false,
-            userLoginInfo: action.loginInfo,
-          };
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignout: true,
-            userLoginInfo: null,
-          };
-      }
-    },
-    {
-      isLoading: true,
-      isSignout: false,
-      userLoginInfo: null,
-    }
-  );
+  const[isLoggedIn, setIsLoggedIn] = React.useState(false)
+  React.useEffect(() =>
+  {
+    loginUtils.isLoggedIn((res) => {
+        setIsLoggedIn(res);
+    })
+  }, []);
 
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
         loginUtils.submitHandler(data.email, data.password, (res) => {
           if (res !== false) {
-            dispatch({ type: 'SIGN_IN', loginInfo: res });
+            setIsLoggedIn(true)
           }
         })
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signOut: () => setIsLoggedIn(false),
       signUp: async data => {
         loginUtils.signUpHandler(data.username, data.email, data.password, data.password2, (res, status, errorMsg) => {
           // TODO: go to login after this
@@ -69,6 +46,9 @@ export default function App() {
           }
         })
       },
+      test: () => {
+        loginUtils.isLoggedIn()
+      }
     }),
     []
   );
@@ -87,10 +67,10 @@ export default function App() {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {state.userLoginInfo == null ? (
-          <LoginStack />
-        ) : (
+        {isLoggedIn ? (
           <HomeStack />
+        ) : (
+          <LoginStack />
         )}
       </NavigationContainer>
     </AuthContext.Provider>
