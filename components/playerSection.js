@@ -89,7 +89,7 @@ export default function PlayerSection({ title, navigation }) {
 const screen = Dimensions.get('window')
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0,
     backgroundColor: '#282a36',
   },
   headerContainer: {
@@ -111,10 +111,11 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     backgroundColor: '#282a36',
-    
     height: 45,
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    borderBottomWidth: 1,
+    borderBottomColor: '#474b53',
   },
 
   icon: {
