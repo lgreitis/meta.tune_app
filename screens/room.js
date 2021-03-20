@@ -36,6 +36,8 @@ const screenHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
+    flexShrink: 0,
   },
   header: {
     width: '100%',
@@ -66,8 +68,8 @@ const styles = StyleSheet.create({
   },
   playerContainer: {
     backgroundColor: '#33385b',
-    flex: 0,
-    height: screenHeight * 0.42,
+    flex: 1,
+    minHeight: 30,
   },
   chatContainer: {
     backgroundColor: '#44485b',

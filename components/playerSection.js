@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import YoutubePlayer from "react-native-youtube-iframe";
 import {getYoutubeMeta} from 'react-native-youtube-iframe';
@@ -9,7 +9,7 @@ export default function PlayerSection({ title, navigation }) {
   const [dislike, setDislike] = useState(false);
   const [addSong, setAddSong] = useState(false);
   const [name, setName] = useState('')
-  const [songId, setSongId] = useState('bhU_DEM-7Yc')
+  const [songId, setSongId] = useState('s8P2AFGvc7g')
   const playerRef = useRef();
   
 
@@ -86,18 +86,21 @@ export default function PlayerSection({ title, navigation }) {
   );
 }
 
+const screen = Dimensions.get('window')
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#44475a'
+    backgroundColor: '#282a36',
   },
   headerContainer: {
     backgroundColor: '#282a36',
-    height: '15%',
+    height: 50,
+    justifyContent: 'center',
+    paddingLeft: 10,
   },
   playerContainer: {
     backgroundColor: '#44475a',
-    height: '70%',
+    height: screen.width / (16 / 9),
   },
   playerOverlay:
   {
@@ -108,7 +111,8 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     backgroundColor: '#282a36',
-    height: '15%',
+    
+    height: 45,
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
