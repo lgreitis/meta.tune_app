@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StatusBar, Alert} from 'react-native';
+import {StatusBar, Alert, View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginStack from './routes/loginStack';
 import HomeStack from './routes/homeStack'
@@ -65,6 +65,7 @@ export default function App() {
  
 
   return (
+    <View style={{backgroundColor: '#282a36', flex: 1}}>
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {isLoggedIn ? (
@@ -74,5 +75,6 @@ export default function App() {
         )}
       </NavigationContainer>
     </AuthContext.Provider>
+    </View>
   );
 }
