@@ -1,46 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, FlatList, TextInput, Dimensions, Keyboard } from 'react-native';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import { StyleSheet, Text, View, FlatList, TextInput, Dimensions, Keyboard, Button } from 'react-native';
 import io from 'socket.io-client';
 import Message from './message'
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function ChatSection({ room, navigation }) {
-    const [messages, setMessages] = useState([
-
-    ])
+const ChatSection = React.forwardRef((props, ref) => {
+    const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
 
-    //socket
-    const ref = useRef();
+    useEffect(() => {
+        ref.current.on('chat message', (msg) => onMessage(msg))
+      }, []);
 
-    useEffect(() =>
-    {
-        //on component mount
-        let socket = io("http://88.119.36.191:8888", {
-            query: {
-                slug: room.slug
-            },
-            transports: ["websocket"] // HTTP long-polling is disabled
-        });
-
-        socket.on('chat message', (content) => onMessage(content));
-
-        ref.current = socket;
-
-        //on component dismount
-        return () => {
-            socket.disconnect();
-            console.log("socket disconnected");
-        }
-    }, []);
-
-    const onMessage = (content) =>
-    {
-        console.log("new message from server")
-        addMessage(content);
-    }
-    
     let key = messages.length;
     const addMessage = (message) =>
     {
@@ -57,13 +29,10 @@ export default function ChatSection({ room, navigation }) {
                     ...prevMessages
                 ]
             })
-
-        //console.log(messages);
     }
 
-    const sendMessage = () =>
-    {
-        if(!message)
+    const submitHandler = () => {
+        if (!message)
             return;
         ref.current.emit('chat message', message)
         Keyboard.dismiss();
@@ -72,9 +41,17 @@ export default function ChatSection({ room, navigation }) {
 
     const renderNoStateMessage = () => {
         return (
-          <Text style={styles.noStateMessage}>{"It's a little quiet in here..."}</Text>
+            <Text style={styles.noStateMessage}>{"It's a little quiet in here..."}</Text>
         )
-      }
+    }
+
+
+    const onMessage = (content) =>
+    {
+        console.log("new message from server")
+        addMessage(content);
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.chatContainer}>
@@ -96,30 +73,30 @@ export default function ChatSection({ room, navigation }) {
                     placeholder='Type something...'
                     placeholderTextColor='#646c8d'
                     onChangeText={(val) => setMessage(val)}
-                    onSubmitEditing={sendMessage}
+                    onSubmitEditing={submitHandler}
                     color='white'
                     value={message}
                 />
-                    <TouchableOpacity onPress={sendMessage} containerStyle={styles.iconContainer}>
-                        <Ionicons name="send-outline" style={styles.icon}/>
-                    </TouchableOpacity>
+                <TouchableOpacity onPress={submitHandler} containerStyle={styles.iconContainer}>
+                    <Ionicons name="send-outline" style={styles.icon} />
+                </TouchableOpacity>
             </View>
         </View>
     );
-}
+})
+
+export default ChatSection;
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        
         flexDirection: 'column',
     },
     chatContainer: {
         backgroundColor: '#282a36',
         flex: 1,
-        minWidth: 0,
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderTopColor: '#474b53',
@@ -138,26 +115,26 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         paddingLeft: 30,
         fontSize: 17,
-        
+
     },
-    iconContainer:{
+    iconContainer: {
         position: 'absolute',
         right: 20,
         top: 10,
     },
     icon: {
         fontSize: 30,
-        color:'white',
+        color: 'white',
         padding: 8,
         backgroundColor: '#bf9dfe',
-        borderRadius: 43,  
+        borderRadius: 43,
     },
     noStateMessage:
     {
         color: 'white',
-        transform: [{scaleY: -1}],
+        transform: [{ scaleY: -1 }],
         fontSize: 15,
-        paddingLeft : 20,
-        paddingBottom : 15,
+        paddingLeft: 20,
+        paddingBottom: 15,
     }
 });

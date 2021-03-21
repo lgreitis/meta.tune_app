@@ -6,7 +6,15 @@ import Header from '../components/header'
 import roomUtils from '../lib/roomUtils'
 
 export default function Home({ navigation }) {
-  const [rooms, setRooms] = useState([])
+  const [rooms, setRooms] = useState([
+    {
+      url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
+      roomName: 'Lofi and chill',
+      viewersCount: 12,
+      favorite: false,
+      key: '1'
+    },
+  ])
 
   const [showFavorites, setShowFavorites] = useState(
     {

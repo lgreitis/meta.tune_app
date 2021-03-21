@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, Text, BackHandler, Dimensions, KeyboardAvoidingView, Keyboard } from 'react-native';
-
+import io from 'socket.io-client';
 import { MaterialIcons } from '@expo/vector-icons';
 import PlayerSection from '../components/playerSection'
 import ChatSection from '../components/chatSection'
 
-
-
 export default function Room({ route, navigation }) {
   const { room } = route.params;
-  const[isKeyboardOn, setIsKeyboardOn] = useState(false)
+  const [isKeyboardOn, setIsKeyboardOn] = useState(false)
+  const [socketIsLoaded, setSocketIsLoaded] = useState(false)
+
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", keyboardDidShow);
     Keyboard.addListener("keyboardDidHide", keyboardDidHide);
-
-
     // cleanup function
     return () => {
       Keyboard.removeListener("keyboardDidShow", keyboardDidShow);
@@ -24,14 +22,32 @@ export default function Room({ route, navigation }) {
 
   const keyboardDidHide = () => {
     setIsKeyboardOn(false)
-    console.log('b')
   }
 
   const keyboardDidShow = () => {
     setIsKeyboardOn(true)
-    console.log('a')
   }
 
+  const ref = useRef();
+
+  useEffect(() => {
+    //on component mount
+    let socket = io("http://88.119.36.191:8888", {
+      query: {
+        slug: room.slug
+      },
+      transports: ["websocket"] // HTTP long-polling is disabled
+    });
+
+    ref.current = socket;
+    setSocketIsLoaded(true);
+
+    //on component dismount
+    return () => {
+      socket.disconnect();
+      console.log("socket disconnected");
+    }
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -44,12 +60,24 @@ export default function Room({ route, navigation }) {
         <MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={() => console.log('menu pressed')} />
       </View>
 
-      <View style={[styles.playerContainer, isKeyboardOn ? {zIndex: 0}:{zIndex: 1}]}>
-        <PlayerSection />
+      <View style={[styles.playerContainer, isKeyboardOn ? { zIndex: 0 } : { zIndex: 1 }]}>
+        {socketIsLoaded ?
+          <PlayerSection ref={ref} />
+          :
+          <Text>{"Loading player..."}</Text>
+        }
       </View>
+
+
       <View style={styles.chatContainer}>
-        <ChatSection room={room} />
+        {socketIsLoaded ?
+          <ChatSection ref={ref} />
+          :
+          <Text>{"Loading chat..."}</Text>
+        }
+
       </View>
+
     </KeyboardAvoidingView>
   );
 }

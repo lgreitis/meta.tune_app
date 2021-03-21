@@ -1,21 +1,33 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import YoutubePlayer from "react-native-youtube-iframe";
-import {getYoutubeMeta} from 'react-native-youtube-iframe';
+import { getYoutubeMeta } from 'react-native-youtube-iframe';
+import Button from './button';
 
-export default function PlayerSection({ title, navigation }) {
+
+const PlayerSection = React.forwardRef((props, ref) => {
   const [like, setLike] = useState(false);
   const [dislike, setDislike] = useState(false);
   const [addSong, setAddSong] = useState(false);
   const [name, setName] = useState('')
-  const [songId, setSongId] = useState('s8P2AFGvc7g')
+  const [songId, setSongId] = useState('')
+  const [startAt, setStartAt] = useState(0);
+  const [isPlaying, setisPlaying] = useState(true);
+
   const playerRef = useRef();
-  
+
+  useEffect(() => {
+    ref.current.on('now playing', (id) => changeSong(id, 0))
+  }, []);
 
   getYoutubeMeta(songId).then(meta => {
     setName(meta.title);
   });
+
+  const joinQueue = () => {
+    ref.current.emit('join queue');
+  }
 
   const likePressHandler = () => {
     if (like == false) {
@@ -38,30 +50,56 @@ export default function PlayerSection({ title, navigation }) {
   const addSongPressHandler = () => {
     setAddSong(!addSong);
   }
+
+  const changeSong = (id, startAt) => {
+    setSongId('');
+    setSongId(id);
+    setStartAt(startAt)
+  }
+
+  const autoPlay = () => {
+    setisPlaying(false);
+    setisPlaying(true);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.songName}>{name}</Text>
         <Text style={styles.userName}>{"Sinsils"}</Text>
       </View>
-      
-        <View style={styles.playerContainer}>
+
+      <View style={styles.playerContainer}>
+        {songId ?
           <YoutubePlayer
             ref={playerRef}
             height={300}
-            play={true}
+            play={isPlaying}
             initialPlayerParams={{
               controls: false,
               preventFullScreen: true,
-              allowWebViewZoom: false
+              allowWebViewZoom: false,
+              start: startAt,
             }}
             forceAndroidAutoplay
             videoId={songId}
+            onReady={autoPlay}
           />
-          <View style={styles.playerOverlay} />
-        </View>
-      
+          :
+          <View>
+
+          </View>
+        }
+
+        <View style={styles.playerOverlay} />
+      </View>
+
       <View style={styles.footerContainer}>
+        <Button
+          title='join queue'
+          color='black'
+          onPress={joinQueue}
+        />
         <TouchableOpacity style={styles.likeIconContainer} onPress={likePressHandler}>
           {like
             ? <MaterialIcons name='thumb-up' style={styles.icon} color='white' />
@@ -84,7 +122,9 @@ export default function PlayerSection({ title, navigation }) {
 
     </View>
   );
-}
+});
+
+export default PlayerSection;
 
 const screen = Dimensions.get('window')
 const styles = StyleSheet.create({
@@ -131,7 +171,7 @@ const styles = StyleSheet.create({
 
   },
   songName: {
-    color : 'white',
+    color: 'white',
   },
   userName: {
     color: 'white',
