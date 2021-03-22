@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, Dimensions, KeyboardAvoidingView } from 'react-native';
 import Room from '../components/room';
 import Button from '../components/button'
 import Header from '../components/header'
 import roomUtils from '../lib/roomUtils'
+import { MaterialIcons } from '@expo/vector-icons';
+import {Menu, Divider, Provider } from 'react-native-paper';
+import { AuthContext } from "../App.js"
+
 
 export default function Home({ navigation }) {
   const [rooms, setRooms] = useState([
@@ -22,14 +26,18 @@ export default function Home({ navigation }) {
     }
   )
 
-  useEffect(() =>
-  {
-    if(rooms !== null)
-    {
-      setRooms([]);
-      getRooms();
+  const [visible, setVisible] = React.useState(false);
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
+
+  const { signOut } = React.useContext(AuthContext);
+
+  useEffect(() => {
+    if (rooms !== null) {
+      // setRooms([]);
+      // getRooms();
     }
-    
+
   }, []);
 
   const getRooms = () => {
@@ -75,8 +83,7 @@ export default function Home({ navigation }) {
   }
 
   const showRooms = () => {
-    if(rooms.length > 0)
-    {
+    if (rooms.length > 0) {
       if (!showFavorites.favorite) {
         return [...rooms].sort((roomA, roomB) =>
           (roomA.viewersCount > roomB.viewersCount) ? -1 : 1);
@@ -103,7 +110,7 @@ export default function Home({ navigation }) {
         favorite: false
       }
     )
-    
+
   }
 
   const renderNoStateMessage = () => {
@@ -112,11 +119,33 @@ export default function Home({ navigation }) {
     )
   }
   return (
-    <View style={styles.container}>
-      <Header title='Home' />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.headerText}>{"Home"}</Text>
+          </View>
+          <Provider style={{zIndex: 1}}>
+            <View style={styles.menuContainer}>
+              <Menu
+                visible={visible}
+                onDismiss={closeMenu}
+                anchor={<MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={openMenu} />}>
+                <Menu.Item onPress={signOut} title="Sign out" style={{}} />
+                <Menu.Item onPress={() => console.log('pressed test button!')} title="test button" style={{}} />
 
-      <View style={styles.contentContainer}>
-        <View style={styles.buttonsContainer}>
+              </Menu>
+            </View>
+          </Provider>
+        </View>
+
+
+
+        <View style={styles.contentContainer}>
+          <View style={styles.buttonsContainer}>
 
           <Button
             onPress={exploreHandler}
@@ -147,11 +176,14 @@ export default function Home({ navigation }) {
             )}
           />
         </View>
-      </View>
+        </View>
 
-    </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
+
+const screen = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -172,14 +204,51 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingVertical: 20,
     paddingHorizontal: 10,
+    zIndex: 0,
   },
   contentContainer: {
     flex: 1,
     backgroundColor: '#272b36',
+    zIndex: 0,
   },
   roomsList: {
     backgroundColor: '#272b36',
     alignItems: 'center',
     flex: 1,
-  }
+  },
+  header: {
+    width: '100%',
+    maxHeight: screen.height * 0.1,
+    height: screen.height * 0.1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#474b53',
+    paddingBottom: '2%',
+    flex: 0,
+    zIndex: 1,
+    overflow: 'visible',
+  },
+  headerText: {
+    fontSize: 25,
+    color: 'white',
+    letterSpacing: 1,
+    fontWeight: 'bold',
+  },
+  headerTextContainer: {
+    justifyContent: 'center',
+    position: 'absolute',
+    top: '50%',
+  },
+  menuIcon: {
+    color: 'white',
+    fontSize: 30,
+    zIndex: 1,
+  },
+  menuContainer: {
+    position: 'absolute',
+    right: 15,
+    top: '50%',
+    zIndex: 1,
+
+  },
 });

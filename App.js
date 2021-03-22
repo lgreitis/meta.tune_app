@@ -27,7 +27,11 @@ export default function App() {
           }
         })
       },
-      signOut: () => setIsLoggedIn(false),
+      signOut: () => {
+        setIsLoggedIn(false);
+        const RCTNetworking = require('react-native/Libraries/Network/RCTNetworking');
+        RCTNetworking.clearCookies(() => {});
+      },
       signUp: async data => {
         loginUtils.signUpHandler(data.username, data.email, data.password, data.password2, (res, status, errorMsg) => {
           // TODO: go to login after this
