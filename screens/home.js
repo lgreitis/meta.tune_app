@@ -5,7 +5,7 @@ import Button from '../components/button'
 import Header from '../components/header'
 import roomUtils from '../lib/roomUtils'
 import { MaterialIcons } from '@expo/vector-icons';
-import {Menu, Divider, Provider } from 'react-native-paper';
+import { Menu, Divider, Provider } from 'react-native-paper';
 import { AuthContext } from "../App.js"
 
 
@@ -34,8 +34,8 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     if (rooms !== null) {
-      // setRooms([]);
-      // getRooms();
+      setRooms([]);
+      getRooms();
     }
 
   }, []);
@@ -49,6 +49,7 @@ export default function Home({ navigation }) {
       })
     })
   }
+
   const addRoom = (room, key) => {
     setRooms(oldRooms => {
       return [
@@ -118,6 +119,7 @@ export default function Home({ navigation }) {
       <Text style={{ color: 'white' }}>{"No rooms :("}</Text>
     )
   }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -128,12 +130,13 @@ export default function Home({ navigation }) {
           <View style={styles.headerTextContainer}>
             <Text style={styles.headerText}>{"Home"}</Text>
           </View>
-          <Provider style={{zIndex: 1}}>
+          <Provider style={{ zIndex: 1 }}>
             <View style={styles.menuContainer}>
               <Menu
                 visible={visible}
                 onDismiss={closeMenu}
                 anchor={<MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={openMenu} />}>
+                <Menu.Item onPress={() => {closeMenu(); navigation.navigate('AddRoom')}} title="Create a room" style={{}} />
                 <Menu.Item onPress={signOut} title="Sign out" style={{}} />
                 <Menu.Item onPress={() => console.log('pressed test button!')} title="test button" style={{}} />
 
@@ -147,35 +150,35 @@ export default function Home({ navigation }) {
         <View style={styles.contentContainer}>
           <View style={styles.buttonsContainer}>
 
-          <Button
-            onPress={exploreHandler}
-            title='Explore'
-            backgroundColor='#44495c'
-          />
+            <Button
+              onPress={exploreHandler}
+              title='Explore'
+              backgroundColor='#44495c'
+            />
 
-          <Button
-            onPress={showFavoritesHandler}
-            title='Favorites'
-            backgroundColor='#44495c'
-          />
-        </View>
+            <Button
+              onPress={showFavoritesHandler}
+              title='Favorites'
+              backgroundColor='#44495c'
+            />
+          </View>
 
-        <View style={styles.roomsList}>
-          <FlatList
-            data={showRooms()}
-            numColumns={2}
-            horizontal={false}
-            ListEmptyComponent={renderNoStateMessage()}
-            renderItem={({ item }) =>
-            (
-              <Room
-                item={item}
-                pressHandler={() => roomPressHandler(item.key)}
-                toggleFavorite={() => toggleFavorite(item.key, item.favorite)}
-              />
-            )}
-          />
-        </View>
+          <View style={styles.roomsList}>
+            <FlatList
+              data={showRooms()}
+              numColumns={2}
+              horizontal={false}
+              ListEmptyComponent={renderNoStateMessage()}
+              renderItem={({ item }) =>
+              (
+                <Room
+                  item={item}
+                  pressHandler={() => roomPressHandler(item.key)}
+                  toggleFavorite={() => toggleFavorite(item.key, item.favorite)}
+                />
+              )}
+            />
+          </View>
         </View>
 
       </View>
