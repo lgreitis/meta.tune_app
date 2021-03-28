@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StatusBar, Alert, View} from 'react-native';
+import { StatusBar, Alert, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginStack from './routes/loginStack';
 import HomeStack from './routes/homeStack'
@@ -10,11 +10,10 @@ export const AuthContext = React.createContext();
 
 export default function App() {
   StatusBar.setBarStyle('dark-contgen', true);
-  const[isLoggedIn, setIsLoggedIn] = React.useState(false)
-  React.useEffect(() =>
-  {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true)
+  React.useEffect(() => {
     loginUtils.isLoggedIn((res) => {
-        setIsLoggedIn(res);
+      setIsLoggedIn(res);
     })
   }, []);
 
@@ -30,18 +29,18 @@ export default function App() {
       signOut: () => {
         setIsLoggedIn(false);
         const RCTNetworking = require('react-native/Libraries/Network/RCTNetworking');
-        RCTNetworking.clearCookies(() => {});
+        RCTNetworking.clearCookies(() => { });
       },
       signUp: async data => {
         loginUtils.signUpHandler(data.username, data.email, data.password, data.password2, (res, status, errorMsg) => {
           // TODO: go to login after this
-          if(status === 201){
+          if (status === 201) {
             showMessage({
               message: "Registered successfully",
               type: "success",
             });
           }
-          if(status === 400){
+          if (status === 400) {
             // showMessage({
             //   message: errorMsg,
             //   type: "danger",
@@ -56,8 +55,7 @@ export default function App() {
     }),
     []
   );
-  const alert = (message) =>
-  {
+  const alert = (message) => {
     Alert.alert(
       ":(",
       message,
@@ -66,19 +64,19 @@ export default function App() {
       ]
     );
   }
- 
+
 
   return (
-    <View style={{backgroundColor: '#282a36', flex: 1}}>
-    <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
+    <View style={{ backgroundColor: '#282a36', flex: 1 }}>
+      <AuthContext.Provider value={authContext}>
+
         {isLoggedIn ? (
           <HomeStack />
         ) : (
           <LoginStack />
         )}
-      </NavigationContainer>
-    </AuthContext.Provider>
+
+      </AuthContext.Provider>
     </View>
   );
 }

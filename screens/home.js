@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, FlatList, Dimensions, KeyboardAvoidingView } from 'react-native';
 import Room from '../components/room';
 import Button from '../components/button'
-import Header from '../components/header'
 import roomUtils from '../lib/roomUtils'
 import { MaterialIcons } from '@expo/vector-icons';
-import { Menu, Divider, Provider } from 'react-native-paper';
 import { AuthContext } from "../App.js"
+import SideMenu from 'react-native-side-menu-updated'
+import Menu from '../components/menu'
 
 
 export default function Home({ navigation }) {
@@ -26,9 +26,15 @@ export default function Home({ navigation }) {
     }
   )
 
-  const [visible, setVisible] = React.useState(false);
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const openMenu = () => setIsMenuOpen(true);
+  const closeMenu = () => setIsMenuOpen(false)
+  const toggleMenu = () => {
+    setTimeout(() =>
+      {setIsMenuOpen(!isMenuOpen)}, 0
+    )}
+
+
 
   const { signOut } = React.useContext(AuthContext);
 
@@ -36,9 +42,10 @@ export default function Home({ navigation }) {
     if (rooms !== null) {
       setRooms([]);
       getRooms();
-    }
 
+    }
   }, []);
+
 
   const getRooms = () => {
     let key = 1;
@@ -120,69 +127,73 @@ export default function Home({ navigation }) {
     )
   }
 
+  const menu = <Menu navigation={navigation} signOut={signOut} closeMenu={closeMenu} />
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
+    <SideMenu
+      menu={menu}
+      openMenuOffset={screen.width * 0.7}
+      menuPosition='right'
+      isOpen={isMenuOpen}
+      onChange={toggleMenu}
+      overlayColor={'rgba(0,0,0,0.3)'}
+
     >
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerText}>{"Home"}</Text>
-          </View>
-          <Provider style={{ zIndex: 1 }}>
-            <View style={styles.menuContainer}>
-              <Menu
-                visible={visible}
-                onDismiss={closeMenu}
-                anchor={<MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={openMenu} />}>
-                <Menu.Item onPress={() => {closeMenu(); navigation.navigate('AddRoom')}} title="Create a room" style={{}} />
-                <Menu.Item onPress={signOut} title="Sign out" style={{}} />
-                <Menu.Item onPress={() => console.log('pressed test button!')} title="test button" style={{}} />
 
-              </Menu>
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.headerText}>{"Home"}</Text>
             </View>
-          </Provider>
-        </View>
+            <View style={styles.menuContainer}>
+              <MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={toggleMenu} />
+            </View>
 
-
-
-        <View style={styles.contentContainer}>
-          <View style={styles.buttonsContainer}>
-
-            <Button
-              onPress={exploreHandler}
-              title='Explore'
-              backgroundColor='#44495c'
-            />
-
-            <Button
-              onPress={showFavoritesHandler}
-              title='Favorites'
-              backgroundColor='#44495c'
-            />
           </View>
 
-          <View style={styles.roomsList}>
-            <FlatList
-              data={showRooms()}
-              numColumns={2}
-              horizontal={false}
-              ListEmptyComponent={renderNoStateMessage()}
-              renderItem={({ item }) =>
-              (
-                <Room
-                  item={item}
-                  pressHandler={() => roomPressHandler(item.key)}
-                  toggleFavorite={() => toggleFavorite(item.key, item.favorite)}
-                />
-              )}
-            />
-          </View>
-        </View>
 
-      </View>
-    </KeyboardAvoidingView>
+
+          <View style={styles.contentContainer}>
+            <View style={styles.buttonsContainer}>
+
+              <Button
+                onPress={exploreHandler}
+                title='Explore'
+                backgroundColor='#44495c'
+              />
+
+              <Button
+                onPress={showFavoritesHandler}
+                title='Favorites'
+                backgroundColor='#44495c'
+              />
+            </View>
+
+            <View style={styles.roomsList}>
+              <FlatList
+                data={showRooms()}
+                numColumns={2}
+                horizontal={false}
+                ListEmptyComponent={renderNoStateMessage()}
+                renderItem={({ item }) =>
+                (
+                  <Room
+                    item={item}
+                    pressHandler={() => roomPressHandler(item.key)}
+                    toggleFavorite={() => toggleFavorite(item.key, item.favorite)}
+                  />
+                )}
+              />
+            </View>
+          </View>
+
+        </View>
+      </KeyboardAvoidingView>
+    </SideMenu>
   );
 }
 
