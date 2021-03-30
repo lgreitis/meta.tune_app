@@ -72,7 +72,7 @@ export default function Room({ route, navigation }) {
 
       <View style={styles.chatContainer}>
         {socketIsLoaded ?
-          <ChatSection ref={ref} />
+          <ChatSection ref={ref} room={room} />
           :
           <Text>{"Loading chat..."}</Text>
         }

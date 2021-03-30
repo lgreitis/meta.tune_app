@@ -9,6 +9,8 @@ const ChatSection = React.forwardRef((props, ref) => {
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
 
+    const room = props.room;
+
     useEffect(() => {
         ref.current.on('chat message', (msg) => onMessage(msg))
       }, []);
@@ -41,7 +43,7 @@ const ChatSection = React.forwardRef((props, ref) => {
 
     const renderNoStateMessage = () => {
         return (
-            <Text style={styles.noStateMessage}>{"It's a little quiet in here..."}</Text>
+            <Text style={styles.noStateMessage}>{room.motd}</Text>
         )
     }
 
