@@ -20,8 +20,7 @@ const PlayerSection = React.forwardRef((props, ref) => {
   useEffect(() => {
     ref.current.on('now playing', (id) => changeSong(id, 0))
 
-    if(songId)
-    {
+    if (songId) {
       getYoutubeMeta(songId).then(meta => {
         setName(meta.title);
       });
@@ -32,6 +31,10 @@ const PlayerSection = React.forwardRef((props, ref) => {
 
   const joinQueue = () => {
     ref.current.emit('join queue');
+  }
+
+  const skipSong = () => {
+    ref.current.emit("skip");
   }
 
   const likePressHandler = () => {
@@ -64,7 +67,7 @@ const PlayerSection = React.forwardRef((props, ref) => {
     getYoutubeMeta(songId).then(meta => {
       setName(meta.title);
     });
-  
+
   }
 
   const autoPlay = () => {
@@ -110,6 +113,12 @@ const PlayerSection = React.forwardRef((props, ref) => {
           color='black'
           onPress={joinQueue}
         />
+        <Button
+          title='skip'
+          color='black'
+          onPress={skipSong}
+        />
+
         <TouchableOpacity style={styles.likeIconContainer} onPress={likePressHandler}>
           {like
             ? <MaterialIcons name='thumb-up' style={styles.icon} color='white' />
