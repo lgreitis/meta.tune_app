@@ -40,6 +40,7 @@ export default function Room({ route, navigation }) {
     });
 
     ref.current = socket;
+    console.log("socket connected")
     setSocketIsLoaded(true);
 
     //on component dismount

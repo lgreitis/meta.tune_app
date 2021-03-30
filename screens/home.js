@@ -11,76 +11,64 @@ import Menu from '../components/menu'
 
 export default function Home({ navigation }) {
   const [rooms, setRooms] = useState([
-    {
-      url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
-      roomName: 'Lofi and chill',
-      viewersCount: 12,
-      favorite: false,
-      key: '1'
-    },
+    // {
+    //   url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
+    //   roomName: 'Lofi and chill',
+    //   viewersCount: 12,
+    //   favorite: false,
+    //   key: '1'
+    // },
   ])
 
-  const [showFavorites, setShowFavorites] = useState(
-    {
-      favorite: false
-    }
-  )
+  const [showFavorites, setShowFavorites] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const openMenu = () => setIsMenuOpen(true);
   const closeMenu = () => setIsMenuOpen(false)
   const toggleMenu = () => {
-    setTimeout(() =>
-      {setIsMenuOpen(!isMenuOpen)}, 0
-    )}
-
-
+    setTimeout(() => { setIsMenuOpen(!isMenuOpen) }, 0)
+  }
 
   const { signOut } = React.useContext(AuthContext);
 
   useEffect(() => {
-    if (rooms !== null) {
-      setRooms([]);
-      getRooms();
-
-    }
+    getRooms();
   }, []);
 
 
   const getRooms = () => {
+    let rooms = [];
     let key = 1;
+    setRefreshing(true)
+
     roomUtils.getRooms((serverRooms) => {
       serverRooms.map(room => {
-        addRoom(room, key);
-        key++;
-      })
-    })
-  }
-
-  const addRoom = (room, key) => {
-    setRooms(oldRooms => {
-      return [
-        {
+        rooms.push({
           key: key,
           roomName: room.name,
           url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
-          viewersCount: 12,
+          viewersCount: Math.floor(Math.random() * 100) + 1,
           favorite: false,
           slug: room.slug,
           desc: room.desc,
           motd: room.motd,
           creator: room.creator,
-        },
-        ...oldRooms
-      ]
-    })
-  }
+        })
+        key++;
+      })
 
+      setRooms(rooms);
+      setRefreshing(false)
+    })
+
+  }
 
   const roomPressHandler = (key) => {
     console.log("room press id " + key);
     navigation.navigate('Room', { room: rooms.find(room => room.key == key) });
   }
+
   const toggleFavorite = (key, isFavorite) => {
     setRooms(rooms.map(room => {
       if (room.key == key) {
@@ -92,7 +80,7 @@ export default function Home({ navigation }) {
 
   const showRooms = () => {
     if (rooms.length > 0) {
-      if (!showFavorites.favorite) {
+      if (!showFavorites) {
         return [...rooms].sort((roomA, roomB) =>
           (roomA.viewersCount > roomB.viewersCount) ? -1 : 1);
       }
@@ -104,47 +92,42 @@ export default function Home({ navigation }) {
   }
 
   const showFavoritesHandler = () => {
-    setShowFavorites(
-      {
-        favorite: true
-      }
-    )
-
+    setShowFavorites(true)
   }
 
   const exploreHandler = () => {
-    setShowFavorites(
-      {
-        favorite: false
-      }
-    )
-
+    setShowFavorites(false)
   }
 
   const renderNoStateMessage = () => {
+
     return (
-      <Text style={{ color: 'white' }}>{"No rooms :("}</Text>
+      <View>
+        {refreshing ?
+          <Text style={{ color: 'white' }}>{"Loading rooms..."}</Text>
+          :
+          <Text style={{ color: 'white' }}>{"No rooms :("}</Text>
+        }
+      </View>
     )
   }
 
   const menu = <Menu navigation={navigation} signOut={signOut} closeMenu={closeMenu} />
   return (
-    <SideMenu
-      menu={menu}
-      openMenuOffset={screen.width * 0.7}
-      menuPosition='right'
-      isOpen={isMenuOpen}
-      onChange={toggleMenu}
-      overlayColor={'rgba(0,0,0,0.3)'}
+    <View style={styles.container}>
+      <SideMenu
+        menu={menu}
+        openMenuOffset={screen.width * 0.7}
+        menuPosition='right'
+        isOpen={isMenuOpen}
+        onChange={toggleMenu}
+        overlayColor={'rgba(0,0,0,0.4)'}
 
-    >
-
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
       >
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.container}
+        >
           <View style={styles.header}>
             <View style={styles.headerTextContainer}>
               <Text style={styles.headerText}>{"Home"}</Text>
@@ -155,21 +138,19 @@ export default function Home({ navigation }) {
 
           </View>
 
-
-
           <View style={styles.contentContainer}>
             <View style={styles.buttonsContainer}>
 
               <Button
                 onPress={exploreHandler}
-                title='Explore'
-                backgroundColor='#44495c'
+                title='All rooms'
+                backgroundColor={showFavorites? '#44495c' : '#bd93f9'}
               />
 
               <Button
                 onPress={showFavoritesHandler}
                 title='Favorites'
-                backgroundColor='#44495c'
+                backgroundColor={!showFavorites? '#44495c' : '#bd93f9'}
               />
             </View>
 
@@ -178,6 +159,8 @@ export default function Home({ navigation }) {
                 data={showRooms()}
                 numColumns={2}
                 horizontal={false}
+                onRefresh={() => getRooms()}
+                refreshing={refreshing}
                 ListEmptyComponent={renderNoStateMessage()}
                 renderItem={({ item }) =>
                 (
@@ -190,10 +173,9 @@ export default function Home({ navigation }) {
               />
             </View>
           </View>
-
-        </View>
-      </KeyboardAvoidingView>
-    </SideMenu>
+        </KeyboardAvoidingView>
+      </SideMenu>
+    </View>
   );
 }
 
@@ -202,7 +184,6 @@ const screen = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 0,
     backgroundColor: '#43485b',
   },
   title: {
