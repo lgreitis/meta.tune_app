@@ -6,7 +6,6 @@ import HomeStack from './routes/homeStack'
 import loginUtils from './lib/loginUtils'
 import AlertProvider from './Alert/AlertProvider'
 import AuthProvider, { authContext } from './context/AuthContext'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthContext = React.createContext();
 
