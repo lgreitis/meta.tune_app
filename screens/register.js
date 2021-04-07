@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TextInput,
    TouchableWithoutFeedback, Keyboard, Touchable, 
    TouchableOpacity, KeyboardAvoidingView } from 'react-native';
-import { AuthContext } from "../App.js"
 import Button from '../components/button';
 import FlashMessage from "react-native-flash-message";
 import { alertContext } from '../Alert/AlertProvider';
+import { authContext } from '../context/AuthContext';
+
 export default function Register({ navigation }) {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
 
-  const { signUp } = React.useContext(AuthContext);
+  const { signUp } = React.useContext(authContext);
 
   const alert = React.useContext(alertContext);
 

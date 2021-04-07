@@ -4,9 +4,9 @@ import Room from '../components/room';
 import Button from '../components/button'
 import roomUtils from '../lib/roomUtils'
 import { MaterialIcons } from '@expo/vector-icons';
-import { AuthContext } from "../App.js"
 import SideMenu from 'react-native-side-menu-updated'
 import Menu from '../components/menu'
+import { authContext } from '../context/AuthContext';
 
 
 export default function Home({ navigation }) {
@@ -30,7 +30,7 @@ export default function Home({ navigation }) {
     setTimeout(() => { setIsMenuOpen(!isMenuOpen) }, 0)
   }
 
-  const { signOut } = React.useContext(AuthContext);
+  const { signOut } = React.useContext(authContext);
 
   useEffect(() => {
     getRooms();

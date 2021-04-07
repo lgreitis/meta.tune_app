@@ -1,15 +1,26 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback,
    Keyboard, Image, TouchableOpacity, StatusBar, KeyboardAvoidingView, } from 'react-native';
-import { AuthContext } from "../App.js"
 import Button from '../components/button';
+import { authContext } from '../context/AuthContext';
+import { alertContext } from '../Alert/AlertProvider';
+
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { signIn } = React.useContext(AuthContext);
-  
+  const { signIn } = React.useContext(authContext);
+  const alert = React.useContext(alertContext);
+
+  const validation = () =>{
+    if(!email || !password)
+    {
+      alert("Please fill out all fields")
+      return;
+    }
+    signIn({ email, password })
+  }
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -43,7 +54,7 @@ export default function Login({ navigation }) {
             />
           </View>
           <Button
-            onPress={() => signIn({ email, password })}
+            onPress={validation}
             title='Login'
             backgroundColor='#bd93f9'
           />
