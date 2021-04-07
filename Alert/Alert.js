@@ -4,36 +4,24 @@ export default props => {
 
   const { isOpen, close, message } = props;
   return (
-    <View style={styles.MainContainer} >
-      <Modal visible={isOpen} transparent={true}>
+    <View style={{}} >
+      <Modal visible={isOpen} transparent={true} statusBarTranslucent={true} animationType={'fade'} >
+        <View style={styles.alertContainer}>
 
-        <View style={{
-          flex: 1, alignItems: 'center', justifyContent: 'center',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)'
-        }}>
 
-          <View style={styles.Alert_Main_View}>
-
-            <Text style={styles.Alert_Message}> {message} </Text>
-
+          <View style={styles.alert}>
+            <Text style={styles.alertMessage}> {message} </Text>
             <View style={{ width: '100%', height: 1 }} />
-
-
             <View style={{ flexDirection: 'row', }}>
-
               <TouchableOpacity
                 style={styles.buttonStyle}
                 onPress={close}
                 activeOpacity={0.7}
               >
-                <Text style={styles.TextStyle}> OK </Text>
-
+                <Text style={styles.textStyle}> OK </Text>
               </TouchableOpacity>
-
             </View>
-
           </View>
-
         </View>
       </Modal>
     </View>
@@ -46,9 +34,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: (Platform.OS == 'ios') ? 20 : 0
   },
-
-  Alert_Main_View: {
-
+  alert: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: "#44475a",
@@ -57,9 +43,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fff',
     borderRadius: 25,
-  },
 
-  Alert_Message: {
+  },
+  alertContainer:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+  },
+  alertMessage: {
 
     fontSize: 20,
     color: "#fff",
@@ -80,7 +72,7 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
 
-  TextStyle: {
+  textStyle: {
     color: '#fff',
     textAlign: 'center',
     fontSize: 25,
