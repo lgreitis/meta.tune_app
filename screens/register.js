@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TextInput,
    TouchableWithoutFeedback, Keyboard, Touchable, 
-   TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
+   TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { AuthContext } from "../App.js"
 import Button from '../components/button';
 import FlashMessage from "react-native-flash-message";
-
+import { alertContext } from '../Alert/AlertProvider';
 export default function Register({ navigation }) {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -13,6 +13,8 @@ export default function Register({ navigation }) {
   const [password2, setPassword2] = useState('');
 
   const { signUp } = React.useContext(AuthContext);
+
+  const alert = React.useContext(alertContext);
 
   const validation = () =>
   {
@@ -22,7 +24,7 @@ export default function Register({ navigation }) {
 
     if(!username || !email || !password || !password2)
     {
-      alert('Please fill out all fields');
+      alert('Please enter all fields');
       return;
     }
 
@@ -33,7 +35,7 @@ export default function Register({ navigation }) {
     }
     if(username.length > 32)
     {
-      alert("Name should be no longer that 32 characters");
+      alert("Name should be no longer than 32 characters");
       return;
     }
     if(userNameRegExp.test(username))
@@ -74,17 +76,6 @@ export default function Register({ navigation }) {
 
     console.log("validation passed");
     signUp({ email, username, password, password2 })
-  }
-
-  const alert = (message) =>
-  {
-    Alert.alert(
-      ":(",
-      message,
-      [
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ]
-    );
   }
 
   return (

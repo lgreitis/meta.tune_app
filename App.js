@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { StatusBar, Alert, View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginStack from './routes/loginStack';
 import HomeStack from './routes/homeStack'
 import loginUtils from './lib/loginUtils'
 import { showMessage, hideMessage } from "react-native-flash-message";
+import AlertProvider from './Alert/AlertProvider'
 
 export const AuthContext = React.createContext();
 
@@ -45,7 +46,7 @@ export default function App() {
             //   message: errorMsg,
             //   type: "danger",
             // });
-            alert(errorMsg);
+            //Alert(errorMsg);
           }
         })
       },
@@ -55,28 +56,30 @@ export default function App() {
     }),
     []
   );
-  const alert = (message) => {
-    Alert.alert(
-      ":(",
-      message,
-      [
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ]
-    );
-  }
+  // const alert = (message) => {
+  //   Alert.alert(
+  //     ":(",
+  //     message,
+  //     [
+  //       { text: "OK", onPress: () => console.log("OK Pressed") }
+  //     ]
+  //   );
+  // }
 
 
   return (
-    <View style={{ backgroundColor: '#282a36', flex: 1 }}>
-      <AuthContext.Provider value={authContext}>
+    <AlertProvider>
+      <View style={{ backgroundColor: '#282a36', flex: 1 }}>
+        <AuthContext.Provider value={authContext}>
 
-        {isLoggedIn ? (
-          <HomeStack />
-        ) : (
-          <LoginStack />
-        )}
+          {isLoggedIn ? (
+            <HomeStack />
+          ) : (
+            <LoginStack />
+          )}
 
-      </AuthContext.Provider>
-    </View>
+        </AuthContext.Provider>
+      </View>
+    </AlertProvider>
   );
 }

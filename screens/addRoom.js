@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import {
     StyleSheet, View, Text, Image, TextInput, TouchableWithoutFeedback,
-    Keyboard, Touchable, TouchableOpacity, Dimensions, KeyboardAvoidingView, Alert
+    Keyboard, Touchable, TouchableOpacity, Dimensions, KeyboardAvoidingView
 } from 'react-native';
 import Button from '../components/button';
 import roomUtils from '../lib/roomUtils'
+import { alertContext } from '../Alert/AlertProvider';
 
 export default function AddRoom({ route, navigation }) {
 
@@ -12,51 +13,37 @@ export default function AddRoom({ route, navigation }) {
     const [description, setDescription] = useState('')
     const [messageOfTheDay, setMessageOfTheDay] = useState('')
 
-
+    const alert = React.useContext(alertContext);
     const createRoom = () => {
         if (!roomName || !description || !messageOfTheDay) {
-            alert("Please enter all fields")
+            alert('Please enter all fields')
             return;
         }
-        if (roomName.length < 5) {
-            alert("Room length should be at least 5 characters")
+        if (roomName.length < 5)
+            alert('Room length should be at least 5 characters')
+        return;
+    }
+
+    console.log("creating room.")
+    console.log(`${roomName}, ${description}, ${messageOfTheDay}`)
+
+    roomUtils.addRoom(roomName, description, messageOfTheDay, (res, status) => {
+        console.log(status)
+        if (status === 200) {
+            alert('Room created!')
+            Keyboard.dismiss();
+            navigation.goBack();
             return;
         }
-
-        console.log("creating room.")
-        console.log(`${roomName}, ${description}, ${messageOfTheDay}`)
-        
-        roomUtils.addRoom(roomName, description, messageOfTheDay, (res, status) => {
-            console.log(status)
-            if(status === 200)
-            {
-                alert("Room created!")
-                Keyboard.dismiss();
-                navigation.goBack();
-                return;
-            }
-            if(status === 401){
-                alert("Not logged in :(")
-                return;
-            }
-            if(status === 403){
-              alert("Room with this name already exists");
-              return;
-            }
-          })
-    }
-
-
-
-    const alert = (message) => {
-        Alert.alert(
-            ":(",
-            message,
-            [
-                { text: "OK", onPress: () => console.log("OK Pressed") }
-            ]
-        );
-    }
+        if (status === 401) {
+            alert('Not logged in :(')
+            return;
+        }
+        if (status === 403) {
+            alert('Room with this name already exists');
+            return;
+        }
+    })
 
     return (
         <KeyboardAvoidingView
