@@ -28,8 +28,7 @@ const PlayerSection = React.forwardRef((props, ref) => {
         console.log(meta.title);
       });
     }
-
-  }, [songId]);
+  }, []);
 
 
   const joinQueue = () => {
@@ -66,11 +65,12 @@ const PlayerSection = React.forwardRef((props, ref) => {
     setSongId('');
     setSongId(id);
     setStartAt(startAt)
-
-    getYoutubeMeta(songId).then(meta => {
-      setName(meta.title);
-    });
-
+    if (id) {
+      getYoutubeMeta(id).then(meta => {
+        setName(meta.title);
+        console.log(meta.title);
+      });
+    }
   }
 
   const autoPlay = () => {

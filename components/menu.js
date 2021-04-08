@@ -12,10 +12,10 @@ export default function Menu({navigation, signOut, closeMenu}) {
             <TouchableWithoutFeedback onPress={closeMenu}>
                 <View style={styles.itemsContainer}>
                     <MenuItem text="Create a room" onPress={() => {closeMenu(), navigation.navigate('AddRoom')}}/>
+                    <MenuItem text="My playlist" onPress={() => {closeMenu(), navigation.navigate('Playlist') }}/>
                     <MenuItem text="Log out" onPress={() => {closeMenu(), signOut() }}/>
                 </View>
             </TouchableWithoutFeedback>
-
         </View>
     );
 }

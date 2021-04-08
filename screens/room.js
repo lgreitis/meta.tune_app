@@ -51,35 +51,37 @@ export default function Room({ route, navigation }) {
   }, []);
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-      <View style={styles.header}>
-        <MaterialIcons name="arrow-back" style={[styles.icon, styles.backIcon]} onPress={() => navigation.goBack()} />
-        <Text style={styles.headerText}>{room.roomName}</Text>
-        <MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={() => console.log('menu pressed')} />
-      </View>
+    <View style={{flex: 1, backgroundColor: '#474b53'}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <View style={styles.header}>
+          <MaterialIcons name="arrow-back" style={[styles.icon, styles.backIcon]} onPress={() => navigation.goBack()} />
+          <Text style={styles.headerText}>{room.roomName}</Text>
+          <MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={() => console.log('menu pressed')} />
+        </View>
 
-      <View style={[styles.playerContainer, isKeyboardOn ? { zIndex: 0 } : { zIndex: 1 }]}>
-        {socketIsLoaded ?
-          <PlayerSection ref={ref} />
-          :
-          <Text>{"Loading player..."}</Text>
-        }
-      </View>
+        <View style={[styles.playerContainer, isKeyboardOn ? { zIndex: 0 } : { zIndex: 1 }]}>
+          {socketIsLoaded ?
+            <PlayerSection ref={ref} />
+            :
+            <Text>{"Loading player..."}</Text>
+          }
+        </View>
 
 
-      <View style={styles.chatContainer}>
-        {socketIsLoaded ?
-          <ChatSection ref={ref} room={room} />
-          :
-          <Text>{"Loading chat..."}</Text>
-        }
+        <View style={styles.chatContainer}>
+          {socketIsLoaded ?
+            <ChatSection ref={ref} room={room} />
+            :
+            <Text>{"Loading chat..."}</Text>
+          }
 
-      </View>
+        </View>
 
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </View>
   );
 }
 

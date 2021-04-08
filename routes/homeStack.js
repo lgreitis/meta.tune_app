@@ -4,6 +4,7 @@ import Home from '../screens/home'
 import Room from '../screens/room';
 import AddRoom from '../screens/addRoom'
 import { NavigationContainer } from '@react-navigation/native';
+import Playlist from '../screens/playlist';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,11 @@ const HomeStack = () => {
                 <Stack.Screen
                     name="AddRoom"
                     component={AddRoom}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Playlist"
+                    component={Playlist}
                     options={{ headerShown: false }}
                 />
             </Stack.Navigator>
