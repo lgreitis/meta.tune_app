@@ -1,6 +1,6 @@
 import React from 'react';
 import loginUtils from '../lib/loginUtils'
-import { alertContext } from '../Alert/AlertProvider';
+import { alertContext } from './alertContext';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { DeviceEventEmitter } from 'react-native'
 
@@ -40,10 +40,7 @@ export default props => {
         loginUtils.signUpHandler(data.username, data.email, data.password, data.password2, (res, status, errorMsg) => {
           // TODO: go to login after this
           if (status === 201) {
-            showMessage({
-              message: "Registered successfully",
-              type: "success",
-            });
+            alert("Registered successfully")
           }
           if (status === 400) {
             alert("User with this email already exists")

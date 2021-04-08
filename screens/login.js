@@ -2,8 +2,8 @@ import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableWithoutFeedback,
    Keyboard, Image, TouchableOpacity, StatusBar, KeyboardAvoidingView, } from 'react-native';
 import Button from '../components/button';
-import { authContext } from '../context/AuthContext';
-import { alertContext } from '../Alert/AlertProvider';
+import { authContext } from '../context/authContext';
+import { alertContext } from '../context/alertContext';
 
 
 export default function Login({ navigation }) {

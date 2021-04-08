@@ -4,8 +4,8 @@ import { StyleSheet, View, Text, Image, TextInput,
    TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import Button from '../components/button';
 import FlashMessage from "react-native-flash-message";
-import { alertContext } from '../Alert/AlertProvider';
-import { authContext } from '../context/AuthContext';
+import { alertContext } from '../context/alertContext';
+import { authContext } from '../context/authContext';
 
 export default function Register({ navigation }) {
   const [email, setEmail] = useState('');

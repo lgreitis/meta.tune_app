@@ -6,7 +6,7 @@ import roomUtils from '../lib/roomUtils'
 import { MaterialIcons } from '@expo/vector-icons';
 import SideMenu from 'react-native-side-menu-updated'
 import Menu from '../components/menu'
-import { authContext } from '../context/AuthContext';
+import { authContext } from '../context/authContext';
 
 
 export default function Home({ navigation }) {

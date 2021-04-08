@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import Button from '../components/button';
 import roomUtils from '../lib/roomUtils'
-import { alertContext } from '../Alert/AlertProvider';
+import { alertContext } from '../context/alertContext';
 
 export default function AddRoom({ route, navigation }) {
 
@@ -14,36 +14,37 @@ export default function AddRoom({ route, navigation }) {
     const [messageOfTheDay, setMessageOfTheDay] = useState('')
 
     const alert = React.useContext(alertContext);
+
     const createRoom = () => {
         if (!roomName || !description || !messageOfTheDay) {
             alert('Please enter all fields')
             return;
         }
-        if (roomName.length < 5)
+        if (roomName.length < 5) {
             alert('Room length should be at least 5 characters')
-        return;
+            return;
+        }
+
+        roomUtils.addRoom(roomName, description, messageOfTheDay, (res, status) => {
+            console.log(status)
+            if (status === 200) {
+                alert('Room created!')
+                Keyboard.dismiss();
+                navigation.goBack();
+                return;
+            }
+            if (status === 401) {
+                alert('Not logged in :(')
+                return;
+            }
+            if (status === 403) {
+                alert('Room with this name already exists');
+                return;
+            }
+        })
+        console.log("creating room.")
+        console.log(`${roomName}, ${description}, ${messageOfTheDay}`)
     }
-
-    console.log("creating room.")
-    console.log(`${roomName}, ${description}, ${messageOfTheDay}`)
-
-    roomUtils.addRoom(roomName, description, messageOfTheDay, (res, status) => {
-        console.log(status)
-        if (status === 200) {
-            alert('Room created!')
-            Keyboard.dismiss();
-            navigation.goBack();
-            return;
-        }
-        if (status === 401) {
-            alert('Not logged in :(')
-            return;
-        }
-        if (status === 403) {
-            alert('Room with this name already exists');
-            return;
-        }
-    })
 
     return (
         <KeyboardAvoidingView

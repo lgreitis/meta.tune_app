@@ -4,8 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoginStack from './routes/loginStack';
 import HomeStack from './routes/homeStack'
 import loginUtils from './lib/loginUtils'
-import AlertProvider from './Alert/AlertProvider'
-import AuthProvider, { authContext } from './context/AuthContext'
+import AlertProvider from './context/alertContext'
+import AuthProvider, { authContext } from './context/authContext'
 
 export const AuthContext = React.createContext();
 
