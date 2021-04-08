@@ -19,14 +19,17 @@ const PlayerSection = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     ref.current.on('now playing', (id) => changeSong(id, 0))
+  }, []);
 
+  useEffect(() => {
     if (songId) {
       getYoutubeMeta(songId).then(meta => {
         setName(meta.title);
+        console.log(meta.title);
       });
     }
 
-  }, []);
+  }, [songId]);
 
 
   const joinQueue = () => {
