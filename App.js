@@ -5,7 +5,7 @@ import LoginStack from './routes/loginStack';
 import HomeStack from './routes/homeStack'
 import loginUtils from './lib/loginUtils'
 import AlertProvider from './context/alertContext'
-import AuthProvider, { authContext } from './context/authContext'
+import AuthProvider, { authContext } from './context/AuthContext'
 
 export const AuthContext = React.createContext();
 
