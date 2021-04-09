@@ -10,7 +10,8 @@ const PlayerSection = React.forwardRef((props, ref) => {
   const [like, setLike] = useState(false);
   const [dislike, setDislike] = useState(false);
   const [addSong, setAddSong] = useState(false);
-  const [name, setName] = useState('')
+  const [songName, setSongName] = useState('')
+  const [userName, setUserName] = useState('')
   const [songId, setSongId] = useState('')
   const [startAt, setStartAt] = useState(0);
   const [isPlaying, setisPlaying] = useState(true);
@@ -18,13 +19,13 @@ const PlayerSection = React.forwardRef((props, ref) => {
   const playerRef = useRef();
 
   useEffect(() => {
-    ref.current.on('now playing', (id) => changeSong(id, 0))
+    ref.current.on('now playing', (msg) => changeSong(msg))
   }, []);
 
   useEffect(() => {
     if (songId) {
       getYoutubeMeta(songId).then(meta => {
-        setName(meta.title);
+        setSongName(meta.title);
         console.log(meta.title);
       });
     }
@@ -61,16 +62,34 @@ const PlayerSection = React.forwardRef((props, ref) => {
     setAddSong(!addSong);
   }
 
-  const changeSong = (id, startAt) => {
-    setSongId('');
-    setSongId(id);
-    setStartAt(startAt)
-    if (id) {
-      getYoutubeMeta(id).then(meta => {
-        setName(meta.title);
-        console.log(meta.title);
-      });
+  const changeSong = (msg) => {
+    if(msg.mediaId != 'false')
+    {
+      setUserName(msg.playingData.playingUser)
+      if(msg.new)
+      {
+        setSongId('');
+        setSongId(msg.mediaId)
+        setStartAt(0)
+      }
+      else
+      {
+        const milli = Date.now() - msg.playingData.syncTime
+        const sec = Math.floor(milli / 1000);
+        setSongId('');
+        setSongId(msg.mediaId)
+        setStartAt(sec)
+      }
+      if (msg.mediaId) {
+        getYoutubeMeta(msg.mediaId).then(meta => {
+          setSongName(meta.title);
+          console.log(meta.title);
+        });
+      }
     }
+    
+
+
   }
 
   const autoPlay = () => {
@@ -81,8 +100,8 @@ const PlayerSection = React.forwardRef((props, ref) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.songName}>{name}</Text>
-        <Text style={styles.userName}>{"Sinsils"}</Text>
+        <Text style={styles.songName}>{songName}</Text>
+        <Text style={styles.userName}>{userName}</Text>
       </View>
 
       <View style={styles.playerContainer}>

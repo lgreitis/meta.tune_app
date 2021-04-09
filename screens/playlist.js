@@ -63,23 +63,37 @@ export default function Playlist({ route, navigation }) {
     }
 
     let IDRegExp = /[a-zA-Z0-9_-]{11}/
+    let URLRegExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/
     const addSong = () => {
 
         let id = addSongId.trim();
-        if (!IDRegExp.test(id)) {
-            alert("Youtube ID is invalid")
-            return;
+        if (!IDRegExp.test(id) || id.length != 11) 
+        {
+            let extractedId = id.match(URLRegExp);
+            console.log(extractedId)
+            if (extractedId == null) {
+                alert("Youtube ID is invalid")
+                return;
+            }
+            else{
+                id = extractedId[1];
+                if(id.length != 11)
+                {
+                    alert("Link is invalid")
+                    return;
+                }
+                console.log("Id extracted")
+            }
         }
 
         console.log(id);
         getYoutubeMeta(id).then(meta => {
-            title = meta.title;
-
+            console.log(meta.title);
             roomUtils.addSongToPlaylist(id, (res, status) => {
-                console.log(status)
+                console.log(res)
                 switch (status) {
                     case 201:
-                        alert('Song added!\n' + title)
+                        alert('Song added!\n' + meta.title)
                         Keyboard.dismiss()
                         getSongs();
                         return;
@@ -93,27 +107,8 @@ export default function Playlist({ route, navigation }) {
                         console.log("something went wrong")
                 }
             })
-        }).catch(() => { alert('Something went wrong'); return })
-
-
+        }).catch((err) => { alert("Something went wrong on the server. Try again later"); console.log(err);return })
     }
-
-    // function validateYouTubeUrl()
-    // {
-    //     var url = $('#youTubeUrl').val();
-    //         if (url != undefined || url != '') {
-    //             var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
-    //             var match = url.match(regExp);
-    //             if (match && match[2].length == 11) {
-    //                 // Do anything for being valid
-    //                 // if need to change the url to embed url then use below line
-    //                 $('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0');
-    //             }
-    //             else {
-    //                 // Do anything for not being valid
-    //             }
-    //         }
-    // }
 
     return (
         <View style={styles.container}>
@@ -190,7 +185,7 @@ const styles = StyleSheet.create({
         height: screen.height * 0.1,
         flexDirection: 'row',
         justifyContent: 'center',
-        backgroundColor: '#474b53',
+        backgroundColor: '#44475a',
         alignItems: 'flex-end',
         paddingBottom: '2%',
     },
@@ -224,7 +219,7 @@ const styles = StyleSheet.create({
     },
     songsList: {
         flex: 1,
-       alignItems: 'center'
+        alignItems: 'center'
     },
     inputText: {
         color: 'white',

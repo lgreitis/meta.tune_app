@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     height: screen.height * 0.1,
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#474b53',
+    backgroundColor: '#44475a',
     paddingBottom: '2%',
     flex: 0,
     zIndex: 1,

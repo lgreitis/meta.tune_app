@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     width: '80%',
     minHeight: 100,
     backgroundColor: "#44475a",
-    borderRadius: 20,
+    borderRadius: 30,
   },
   alertMessageContainer: {
     alignContent: 'center',
