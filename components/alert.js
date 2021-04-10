@@ -1,26 +1,25 @@
 import React from 'react';
 import { Platform, StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native';
+import CustomAlertContent from './customAlertContent'
 export default props => {
 
-  const { isOpen, close, message } = props;
+  const { isOpen, close, message, buttonText, customAlertName } = props;
   return (
-
-      <Modal visible={isOpen} transparent={true} statusBarTranslucent={true} animationType={'fade'} >
-        <View style={styles.overlay}>
-          <View style={styles.alertContainer}>
-            <View style={styles.alertMessageContainer}>
-              <Text style={styles.alertMessage}> {message} </Text>
+    
+    <Modal visible={isOpen} transparent={true} statusBarTranslucent={true} animationType={'fade'} >
+      <View style={styles.overlay}>
+        <View style={styles.alertContainer}>
+          <CustomAlertContent name={customAlertName} message={message} />
+          <TouchableOpacity style={styles.alertButtonContainer} onPress={close}>
+            <View style={styles.alertButton}>
+              <Text style={[styles.alertButtonText]}>{buttonText}</Text>
             </View>
-            <TouchableOpacity style={styles.alertButtonContainer} onPress={close}>
-              <View style={styles.alertButton}>
-                <Text style={[styles.alertButtonText]}>{"OK"}</Text>
-              </View>
 
-            </TouchableOpacity>
+          </TouchableOpacity>
 
-          </View>
         </View>
-      </Modal>
+      </View>
+    </Modal>
   );
 }
 
