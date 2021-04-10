@@ -75,12 +75,9 @@ export default function Playlist({ route, navigation }) {
                     alert('Server made an oopsy');
                     return;
                 default:
-                    console.log("something went wrong")
-            }
-        }).catch((err) => {
-            alert("Something went wrong on the server, try again later");
-            return;
-        })
+                    alert('Something went wrong')
+            }})
+
     }
 
     let IDRegExp = /[a-zA-Z0-9_-]{11}/
