@@ -33,6 +33,8 @@ export default function Playlist({ route, navigation }) {
         setRefreshing(true)
         roomUtils.getSongs((serverSongs) => {
             serverSongs.map(song => {
+                if (song == null)
+                    return;
                 songs.push({
                     key: key,
                     id: song.yt_id,
@@ -59,7 +61,26 @@ export default function Playlist({ route, navigation }) {
     }
 
     const deleteSong = (key) => {
-        console.log("delete song key: " + key)
+        roomUtils.deleteSongFromPlaylist(key, (res, status) => {
+            console.log(status)
+            switch (status) {
+                case 200:
+                    alert('Song deleted!\n' + songs[key - 1].title)
+                    getSongs();
+                    return;
+                case 401:
+                    alert('Not logged in :(')
+                    return;
+                case 500:
+                    alert('Server made an oopsy');
+                    return;
+                default:
+                    console.log("something went wrong")
+            }
+        }).catch((err) => {
+            alert("Something went wrong on the server, try again later");
+            return;
+        })
     }
 
     let IDRegExp = /[a-zA-Z0-9_-]{11}/
@@ -67,18 +88,15 @@ export default function Playlist({ route, navigation }) {
     const addSong = () => {
 
         let id = addSongId.trim();
-        if (!IDRegExp.test(id) || id.length != 11) 
-        {
+        if (!IDRegExp.test(id) || id.length != 11) {
             let extractedId = id.match(URLRegExp);
-            console.log(extractedId)
             if (extractedId == null) {
                 alert("Youtube ID is invalid")
                 return;
             }
-            else{
+            else {
                 id = extractedId[1];
-                if(id.length != 11)
-                {
+                if (id.length != 11) {
                     alert("Link is invalid")
                     return;
                 }
@@ -90,7 +108,7 @@ export default function Playlist({ route, navigation }) {
         getYoutubeMeta(id).then(meta => {
             console.log(meta.title);
             roomUtils.addSongToPlaylist(id, (res, status) => {
-                console.log(res)
+                console.log(status)
                 switch (status) {
                     case 201:
                         alert('Song added!\n' + meta.title)
@@ -103,11 +121,17 @@ export default function Playlist({ route, navigation }) {
                     case 403:
                         alert('Song already exists');
                         return;
+                    case 406:
+                        alert('Song is too long or age restricted')
+                        return;
                     default:
                         console.log("something went wrong")
                 }
             })
-        }).catch((err) => { alert("Something went wrong on the server. Try again later"); console.log(err);return })
+        }).catch((err) => { 
+            alert("Something went wrong on the server. Try again later"); 
+            return; 
+        })
     }
 
     return (

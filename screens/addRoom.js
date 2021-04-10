@@ -20,9 +20,12 @@ export default function AddRoom({ route, navigation }) {
             alert('Please enter all fields')
             return;
         }
-        if (roomName.length < 5) {
-            alert('Room length should be at least 5 characters')
+        if (roomName.length < 3) {
+            alert('Room name is too short!')
             return;
+        }
+        if(roomName.length > 32){
+            alert('Room name is too long!')
         }
 
         roomUtils.addRoom(roomName, description, messageOfTheDay, (res, status) => {
