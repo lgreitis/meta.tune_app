@@ -133,7 +133,6 @@ export default function Playlist({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={styles.container}>
@@ -173,7 +172,6 @@ export default function Playlist({ route, navigation }) {
                     </View>
                 </View>
             </KeyboardAvoidingView>
-
         </View>
     );
 }
