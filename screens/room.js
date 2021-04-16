@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, Text, BackHandler, Dimensions, KeyboardAvoidingView, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, BackHandler, Dimensions, KeyboardAvoidingView, Keyboard, DeviceEventEmitter } from 'react-native';
 import io from 'socket.io-client';
 import { MaterialIcons } from '@expo/vector-icons';
 import PlayerSection from '../components/playerSection'
 import ChatSection from '../components/chatSection'
+import PlaylistProvider from '../context/playlistContext'
 
 export default function Room({ route, navigation }) {
   const { room } = route.params;
@@ -13,6 +14,7 @@ export default function Room({ route, navigation }) {
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", keyboardDidShow);
     Keyboard.addListener("keyboardDidHide", keyboardDidHide);
+
     // cleanup function
     return () => {
       Keyboard.removeListener("keyboardDidShow", keyboardDidShow);
@@ -51,37 +53,39 @@ export default function Room({ route, navigation }) {
   }, []);
 
   return (
-    <View style={{flex: 1, backgroundColor: '#474b53'}}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
-        <View style={styles.header}>
-          <MaterialIcons name="arrow-back" style={[styles.icon, styles.backIcon]} onPress={() => navigation.goBack()} />
-          <Text style={styles.headerText}>{room.roomName}</Text>
-          <MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={() => console.log('menu pressed')} />
-        </View>
+    <PlaylistProvider>
+      <View style={{ flex: 1, backgroundColor: '#474b53' }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.container}
+        >
+          <View style={styles.header}>
+            <MaterialIcons name="arrow-back" style={[styles.icon, styles.backIcon]} onPress={() => navigation.goBack()} />
+            <Text style={styles.headerText}>{room.roomName}</Text>
+            <MaterialIcons name="menu" style={[styles.icon, styles.menuIcon]} onPress={() => console.log("menu pressed")} />
+          </View>
 
-        <View style={[styles.playerContainer, isKeyboardOn ? { zIndex: 0 } : { zIndex: 1 }]}>
-          {socketIsLoaded ?
-            <PlayerSection ref={ref} />
-            :
-            <Text>{"Loading player..."}</Text>
-          }
-        </View>
+          <View style={[styles.playerContainer, isKeyboardOn ? { zIndex: 0 } : { zIndex: 1 }]}>
+            {socketIsLoaded ?
+              <PlayerSection ref={ref}  />
+              :
+              <Text>{"Loading player..."}</Text>
+            }
+          </View>
 
 
-        <View style={styles.chatContainer}>
-          {socketIsLoaded ?
-            <ChatSection ref={ref} room={room} />
-            :
-            <Text>{"Loading chat..."}</Text>
-          }
+          <View style={styles.chatContainer}>
+            {socketIsLoaded ?
+              <ChatSection ref={ref} room={room} />
+              :
+              <Text>{"Loading chat..."}</Text>
+            }
 
-        </View>
+          </View>
 
-      </KeyboardAvoidingView>
-    </View>
+        </KeyboardAvoidingView>
+      </View>
+    </PlaylistProvider>
   );
 }
 

@@ -14,7 +14,6 @@ export default function App() {
 
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   
-  const {} = React.useContext(authContext);
 
   React.useEffect(() => {
     loginUtils.isLoggedIn((res) => {

@@ -10,6 +10,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import SideMenu from 'react-native-side-menu-updated'
 import Menu from '../components/menu'
 import { authContext } from '../context/AuthContext';
+import { useIsFocused } from "@react-navigation/native";
 
 
 export default function Home({ navigation }) {
@@ -31,11 +32,12 @@ export default function Home({ navigation }) {
 
   const inputRef = useRef(null);
   const { signOut } = React.useContext(authContext);
+  const isFocused = useIsFocused();
 
   
   useEffect(() => {
     getRooms();
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     displayRooms()

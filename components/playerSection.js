@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Dimensions, DeviceEventEmitter } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import YoutubePlayer from "react-native-youtube-iframe";
 import { getYoutubeMeta } from 'react-native-youtube-iframe';
 import Button from './button';
+import { playlistContext } from '../context/playlistContext'
+import roomUtils from '../lib/roomUtils'
 
 
 const PlayerSection = React.forwardRef((props, ref) => {
@@ -16,11 +18,22 @@ const PlayerSection = React.forwardRef((props, ref) => {
   const [startAt, setStartAt] = useState(0);
   const [isPlaying, setisPlaying] = useState(true);
 
+  const showPlaylist = React.useContext(playlistContext);
   const playerRef = useRef();
 
+  const [songs, setSongs] = useState([])
   useEffect(() => {
     ref.current.on('now playing', (msg) => changeSong(msg))
+    getUserSongs();
   }, []);
+
+  useEffect(() => {
+    let subscription = DeviceEventEmitter.addListener("userSongRequest", (songId) => joinQueue(songId))
+    return () => {
+      subscription.remove()
+    }
+  }, [])
+
 
   useEffect(() => {
     if (songId) {
@@ -31,9 +44,31 @@ const PlayerSection = React.forwardRef((props, ref) => {
     }
   }, []);
 
+  const getUserSongs = () => {
+    let songs = []
+    let key = 1
+    roomUtils.getSongs((serverSongs) => {
+      serverSongs.map(song => {
+        if (song == null)
+          return;
+        songs.push({
+          key: key,
+          id: song.yt_id,
+          title: song.title,
+          length: song.length
+        })
+        key++;
+      })
+      setSongs(songs);
+    })
+  }
 
-  const joinQueue = () => {
-    ref.current.emit('join queue');
+  const joinQueuePressHandler = () => {
+    showPlaylist(songs)
+  }
+  const joinQueue = (id) => {
+    console.log("Joining queue. Id: " + id)
+    ref.current.emit('join queue', id)
   }
 
   const skipSong = () => {
@@ -63,17 +98,14 @@ const PlayerSection = React.forwardRef((props, ref) => {
   }
 
   const changeSong = (msg) => {
-    if(msg.mediaId != 'false')
-    {
+    if (msg.mediaId != 'false') {
       setUserName(msg.playingData.playingUser)
-      if(msg.new)
-      {
+      if (msg.new) {
         setSongId('');
         setSongId(msg.mediaId)
         setStartAt(0)
       }
-      else
-      {
+      else {
         const milli = Date.now() - msg.playingData.syncTime
         const sec = Math.floor(milli / 1000);
         setSongId('');
@@ -87,7 +119,7 @@ const PlayerSection = React.forwardRef((props, ref) => {
         });
       }
     }
-    
+
 
 
   }
@@ -133,7 +165,7 @@ const PlayerSection = React.forwardRef((props, ref) => {
         <Button
           title='join queue'
           color='black'
-          onPress={joinQueue}
+          onPress={joinQueuePressHandler}
         />
         <Button
           title='skip'
