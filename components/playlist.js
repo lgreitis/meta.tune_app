@@ -14,13 +14,19 @@ export default props => {
     }
     const returnSongId = () => {
         let songId = ''
-        if(selectedKey !== null)
-        {
+        if (selectedKey !== null) {
             songId = songs[selectedKey - 1].id;
         }
         setSelectedKey(null)
 
         close(songId)
+    }
+    const songItemPressHandler = (key) => {
+        if (selectedKey == null || key != selectedKey) {
+            setSelectedKey(key);
+        }
+        else
+            setSelectedKey(null);
     }
     return (
         <Modal visible={isOpen} transparent={true} statusBarTranslucent={true} animationType={'fade'} >
@@ -36,7 +42,7 @@ export default props => {
                                 <SongItem
                                     item={item}
                                     selectedKey={selectedKey}
-                                    onPress={() => setSelectedKey(item.key)} />
+                                    onPress={() => songItemPressHandler(item.key)} />
                             )}
                             ListEmptyComponent={renderNoStateMessage}
                             extraData={selectedKey}

@@ -110,6 +110,7 @@ export default function Playlist({ route, navigation }) {
                     case 201:
                         alert('Song added!\n' + meta.title)
                         Keyboard.dismiss()
+                        setAddSongId('')
                         getSongs();
                         return;
                     case 401:
