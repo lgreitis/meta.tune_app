@@ -3,6 +3,9 @@ import { StyleSheet, View, Image, Dimensions, Text, TouchableWithoutFeedback } f
 import MenuItem from './menuItem'
 
 export default function Menu({navigation, signOut, closeMenu}) {
+    const logOut = () =>{
+        setTimeout(function(){ signOut() }, 600);
+    }
     return (
         <View style={styles.container}>
             <Image
@@ -13,7 +16,7 @@ export default function Menu({navigation, signOut, closeMenu}) {
                 <View style={styles.itemsContainer}>
                     <MenuItem text="Create a room" onPress={() => {closeMenu(), navigation.navigate('AddRoom')}}/>
                     <MenuItem text="My playlist" onPress={() => {closeMenu(), navigation.navigate('Playlist') }}/>
-                    <MenuItem text="Log out" onPress={() => {closeMenu(), signOut() }}/>
+                    <MenuItem text="Log out" onPress={() => {closeMenu(), logOut() }}/>
                 </View>
             </TouchableWithoutFeedback>
         </View>

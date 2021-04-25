@@ -15,8 +15,8 @@ export default props => {
     () => ({
       signIn: async data => {
         loginUtils.submitHandler(data.email, data.password, (res) => {
-          if (res === true) {
-            DeviceEventEmitter.emit('login', {});
+          if (res.success === true) {
+            DeviceEventEmitter.emit('login', { name: res.name});
           }
           else {
             if (res.message == "Password incorrect") {

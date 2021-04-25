@@ -6,6 +6,7 @@ import { getYoutubeMeta } from 'react-native-youtube-iframe';
 import Button from './button';
 import { playlistContext } from '../context/playlistContext'
 import roomUtils from '../lib/roomUtils'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const PlayerSection = React.forwardRef((props, ref) => {
@@ -17,6 +18,7 @@ const PlayerSection = React.forwardRef((props, ref) => {
   const [songId, setSongId] = useState('')
   const [startAt, setStartAt] = useState(0);
   const [isPlaying, setisPlaying] = useState(true);
+  const [name, setName] = useState('')
 
   const showPlaylist = React.useContext(playlistContext);
   const playerRef = useRef();
@@ -25,6 +27,7 @@ const PlayerSection = React.forwardRef((props, ref) => {
   useEffect(() => {
     ref.current.on('now playing', (msg) => changeSong(msg))
     getUserSongs();
+    getName();
   }, []);
 
   useEffect(() => {
@@ -43,6 +46,18 @@ const PlayerSection = React.forwardRef((props, ref) => {
       });
     }
   }, []);
+
+  const getName = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@name')
+      if (value !== null) {
+        setName(value)
+      }
+    } catch (e) {
+      console.log("failed getting name")
+      console.log(e)
+    }
+  }
 
   const getUserSongs = () => {
     let songs = []
@@ -167,11 +182,15 @@ const PlayerSection = React.forwardRef((props, ref) => {
           color='black'
           onPress={joinQueuePressHandler}
         />
-        <Button
-          title='skip'
-          color='black'
-          onPress={skipSong}
-        />
+        {name == props.room.creator.name ?
+          <Button
+            title='skip'
+            color='black'
+            onPress={skipSong}
+          /> :
+          <View></View>
+        }
+
 
         <TouchableOpacity style={styles.likeIconContainer} onPress={likePressHandler}>
           {like

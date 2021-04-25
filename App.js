@@ -6,6 +6,7 @@ import HomeStack from './routes/homeStack'
 import loginUtils from './lib/loginUtils'
 import AlertProvider from './context/alertContext'
 import AuthProvider, { authContext } from './context/AuthContext'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthContext = React.createContext();
 
@@ -13,32 +14,52 @@ export default function App() {
   StatusBar.setBarStyle('dark-contgen', true);
 
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  
+  const [name, setName] = React.useState('')
+
 
   React.useEffect(() => {
     loginUtils.isLoggedIn((res) => {
       setIsLoggedIn(res);
     })
-    DeviceEventEmitter.addListener("login", (event)=>{setIsLoggedIn(true); console.log("login")})
-    DeviceEventEmitter.addListener("logout", (event)=>{setIsLoggedIn(false); console.log("logout")})
+    let loginListener =DeviceEventEmitter.addListener("login", (event) => { login(event.name)})
+    let registerListener = DeviceEventEmitter.addListener("logout", (event) => { logout() })
 
-    return() => {
-      DeviceEventEmitter.removeListener("login")
-      DeviceEventEmitter.removeListener("logout")
+    return () => {
+      loginListener.remove();
+      registerListener.remove();
     }
   }, []);
-  
-    return (
-      <AlertProvider>
-        <View style={{ backgroundColor: '#282a36', flex: 1 }}>
-          <AuthProvider>
-            {isLoggedIn ? (
-              <HomeStack />
-            ) : (
-              <LoginStack />
-            )}
-          </AuthProvider>
-        </View>
-      </AlertProvider>
-    );
+
+  const login = (name) => {
+    setIsLoggedIn(true);
+    console.log("login: " + name);
+    storeName(name)
+  }
+  const logout = () => {
+    setIsLoggedIn(false); 
+    console.log("logout")
+    
+  }
+
+  const storeName = async (value) => {
+    try {
+      await AsyncStorage.setItem('@name', value)
+    } catch (e) {
+      console.log("failed setting name")
+    }
+  }
+
+  return (
+    <AlertProvider>
+      <View style={{ backgroundColor: '#282a36', flex: 1 }}>
+        <AuthProvider>
+          {isLoggedIn ? (
+            <HomeStack />
+          ) : (
+            <LoginStack />
+          )}
+        </AuthProvider>
+      </View>
+    </AlertProvider>
+  );
 }

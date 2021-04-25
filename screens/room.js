@@ -67,7 +67,7 @@ export default function Room({ route, navigation }) {
 
           <View style={[styles.playerContainer, isKeyboardOn ? { zIndex: 0 } : { zIndex: 1 }]}>
             {socketIsLoaded ?
-              <PlayerSection ref={ref}  />
+              <PlayerSection ref={ref} room={room}  />
               :
               <Text>{"Loading player..."}</Text>
             }

@@ -44,12 +44,12 @@ export default function Home({ navigation }) {
   }, [searchText, showFavorites, rooms])
 
   useEffect(() => {
-    Keyboard.addListener("keyboardDidShow", keyboardDidShow);
-    Keyboard.addListener("keyboardDidHide", keyboardDidHide);
+    let showListener = Keyboard.addListener("keyboardDidShow", keyboardDidShow);
+    let hideListener = Keyboard.addListener("keyboardDidHide", keyboardDidHide);
     // cleanup function
     return () => {
-      Keyboard.removeListener("keyboardDidShow", keyboardDidShow);
-      Keyboard.removeListener("keyboardDidHide", keyboardDidHide);
+      showListener.remove();
+      hideListener.remove();
     };
   }, []);
 

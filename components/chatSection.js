@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { StyleSheet, Text, View, FlatList, TextInput, Dimensions, Keyboard, Button } from 'react-native';
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 import Message from './message'
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -10,28 +10,18 @@ const ChatSection = React.forwardRef((props, ref) => {
     const [message, setMessage] = useState('')
 
     const room = props.room;
-
+    
     useEffect(() => {
         ref.current.on('chat message', (msg) => onMessage(msg))
-      }, []);
+        ref.current.on('delete message', (msg) => onDelete(msg))
+        return () => {
+            ref.current.off('chat message')
+            ref.current.off('delete message')
+        }
+    }, []);
 
     let key = messages.length;
-    const addMessage = (message) =>
-    {
-        key++;
-        console.log(key);
-        setMessages(prevMessages =>
-            {
-                return[
-                    {            
-                        user: message.user,
-                        text: message.text,
-                        key: key
-                    },
-                    ...prevMessages
-                ]
-            })
-    }
+    
 
     const submitHandler = () => {
         if (!message)
@@ -47,11 +37,55 @@ const ChatSection = React.forwardRef((props, ref) => {
         )
     }
 
-
-    const onMessage = (content) =>
-    {
+    const onMessage = (content) => {
         console.log("new message from server")
         addMessage(content);
+    }
+
+    const addMessage = (message) => {
+        key++;
+        console.log(key);
+        setMessages(prevMessages => {
+            return [
+                {
+                    user: message.user,
+                    text: message.text,
+                    key: key,
+                    deleted: false,
+                    ms_id: message.ms_id
+                },
+                ...prevMessages
+            ]
+        })
+    }
+
+    const onDelete = (msg) => {
+        deleteMessage(msg.ms_id)
+    }
+    const deleteMessage = (ms_id) => {
+        setMessages(prevMessages => {
+            let newMessages = prevMessages.map(msg => {
+                if(msg.ms_id == ms_id)
+                {
+                    return {...msg, deleted: true}
+                }
+                else
+                {
+                    return msg
+                }
+            })
+            return newMessages
+        })
+    }
+
+    const deleteMessagePress = (message) => {
+        if (message.deleted)
+            return;
+        else if(message.ms_id == undefined)
+            return;
+        else {
+            ref.current.emit('delete message', message.ms_id);
+        }
     }
 
     return (
@@ -64,7 +98,7 @@ const ChatSection = React.forwardRef((props, ref) => {
                     inverted={true}
                     renderItem={({ item }) =>
                     (
-                        <Message message={item} />
+                        <Message message={item} deleteMessagePress={deleteMessagePress} />
                     )}
                     ListEmptyComponent={renderNoStateMessage}
                 />
