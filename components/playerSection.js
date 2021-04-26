@@ -7,6 +7,7 @@ import Button from './button';
 import { playlistContext } from '../context/playlistContext'
 import roomUtils from '../lib/roomUtils'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { alertContext } from '../context/alertContext';
 
 
 const PlayerSection = React.forwardRef((props, ref) => {
@@ -17,11 +18,12 @@ const PlayerSection = React.forwardRef((props, ref) => {
   const [userName, setUserName] = useState('')
   const [songId, setSongId] = useState('')
   const [startAt, setStartAt] = useState(0);
-  const [isPlaying, setisPlaying] = useState(true);
+  const [isPlaying, setisPlaying] = useState(false);
   const [name, setName] = useState('')
 
   const showPlaylist = React.useContext(playlistContext);
   const playerRef = useRef();
+  const alert = React.useContext(alertContext);
 
   const [songs, setSongs] = useState([])
   useEffect(() => {
@@ -87,6 +89,11 @@ const PlayerSection = React.forwardRef((props, ref) => {
   }
 
   const skipSong = () => {
+    if(!isPlaying)
+    {
+      alert("There is no song playing right now.");
+      return;
+    }
     ref.current.emit("skip");
   }
 
@@ -134,14 +141,38 @@ const PlayerSection = React.forwardRef((props, ref) => {
         });
       }
     }
-
-
-
   }
 
   const autoPlay = () => {
     setisPlaying(false);
     setisPlaying(true);
+  }
+
+  const addToPlaylistPressHandler = () => {
+    if (!songId || !isPlaying) {
+      alert("There is no song playing right now.")
+      return;
+    }
+
+    roomUtils.addSongToPlaylist(songId, (res, status) => {
+      console.log(status)
+      switch (status) {
+        case 201:
+          alert('Song added!\n' + songName)
+          return;
+        case 401:
+          alert('Not logged in :(')
+          return;
+        case 403:
+          alert('Song already exists');
+          return;
+        case 406:
+          alert('Song is too long or age restricted')
+          return;
+        default:
+          alert("Something went wrong on the server. Try again later");
+      }
+    })
   }
 
   return (
@@ -177,22 +208,38 @@ const PlayerSection = React.forwardRef((props, ref) => {
       </View>
 
       <View style={styles.footerContainer}>
-        <Button
-          title='join queue'
-          color='black'
-          onPress={joinQueuePressHandler}
-        />
-        {name == props.room.creator.name ?
+        <View style={styles.buttonContainer}>
           <Button
-            title='skip'
-            color='black'
-            onPress={skipSong}
-          /> :
+            title='join queue'
+            fontSize={20}
+            onPress={joinQueuePressHandler}
+          />
+        </View>
+
+        {name == props.room.creator.name ?
+          <View style={styles.buttonContainer}>
+            <Button
+              title='skip'
+              fontSize={20}
+              onPress={skipSong}
+            />
+          </View> :
+          <View></View>
+        }
+        {isPlaying ?
+          <View style={styles.buttonContainer}>
+            <Button
+              title='add to playlist'
+              fontSize={20}
+              onPress={addToPlaylistPressHandler}
+            />
+          </View> :
           <View></View>
         }
 
 
-        <TouchableOpacity style={styles.likeIconContainer} onPress={likePressHandler}>
+
+        {/* <TouchableOpacity style={styles.likeIconContainer} onPress={likePressHandler}>
           {like
             ? <MaterialIcons name='thumb-up' style={styles.icon} color='white' />
             : <MaterialIcons name='thumb-up-off-alt' style={styles.icon} color='white' />
@@ -209,7 +256,7 @@ const PlayerSection = React.forwardRef((props, ref) => {
             ? <MaterialIcons name='star' style={styles.icon} color='white' />
             : <MaterialIcons name='star-border' style={styles.icon} color='white' />
           }
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
     </View>
@@ -242,12 +289,19 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   footerContainer: {
+    flex: 0,
     backgroundColor: '#282a36',
-    height: 45,
+    height: 50,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#474b53',
+    flexWrap: 'nowrap',
+    alignContent: 'center',
+  },
+  buttonContainer: {
+    // backgroundColor: '#bd93f9'
+
   },
 
   icon: {
