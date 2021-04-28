@@ -4,6 +4,7 @@ import io, { Socket } from 'socket.io-client';
 import Message from './message'
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 const ChatSection = React.forwardRef((props, ref) => {
     const [messages, setMessages] = useState([])
@@ -113,7 +114,7 @@ const ChatSection = React.forwardRef((props, ref) => {
                     color='white'
                     value={message}
                 />
-                <TouchableOpacity onPress={submitHandler} containerStyle={styles.iconContainer}>
+                <TouchableOpacity onPress={submitHandler} style={styles.iconContainer} containerStyle={styles.containerIconContainer} >
                     <Ionicons name="send-outline" style={styles.icon} />
                 </TouchableOpacity>
             </View>
@@ -140,10 +141,12 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         backgroundColor: '#272b36',
-        flex: 0,
+        flex: 1,
         height: 69,
         paddingHorizontal: 20,
         paddingVertical: 10,
+        maxHeight: 70,
+        flexDirection: 'row',
     },
     input: {
         backgroundColor: '#474b53',
@@ -151,9 +154,16 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         paddingLeft: 30,
         fontSize: 17,
-
     },
     iconContainer: {
+        backgroundColor: '#bf9dfe',
+        borderRadius: 50,
+        height: 50,
+        width: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    containerIconContainer: {
         position: 'absolute',
         right: 20,
         top: 10,
@@ -161,9 +171,6 @@ const styles = StyleSheet.create({
     icon: {
         fontSize: 30,
         color: 'white',
-        padding: 8,
-        backgroundColor: '#bf9dfe',
-        borderRadius: 43,
     },
     noStateMessage:
     {
