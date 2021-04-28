@@ -100,7 +100,7 @@ export default function Register({ navigation }) {
               <TextInput
                 placeholder='E-mail'
                 onChangeText={setEmail}
-                placeholderTextColor='#6272a4'
+                placeholderTextColor='#7d8bb5'
                 value={email}
                 color='white'
                 textContentType='emailAddress'
@@ -110,7 +110,7 @@ export default function Register({ navigation }) {
               <TextInput
                 placeholder='Password'
                 onChangeText={setPassword}
-                placeholderTextColor='#6272a4'
+                placeholderTextColor='#7d8bb5'
                 value={password}
                 secureTextEntry={true}
                 color='white'
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   text: {
-    color: '#6272a4',
+    color: '#8e9abe',
     marginBottom: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
