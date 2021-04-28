@@ -90,7 +90,7 @@ export default function Register({ navigation }) {
               <TextInput
                 placeholder='Username'
                 onChangeText={setUsername}
-                placeholderTextColor='#6272a4'
+                placeholderTextColor='#7d8bb5'
                 value={username}
                 color='white'
                 textContentType='username'
@@ -121,7 +121,7 @@ export default function Register({ navigation }) {
               <TextInput
                 placeholder='Confirm password'
                 onChangeText={setPassword2}
-                placeholderTextColor='#6272a4'
+                placeholderTextColor='#7d8bb5'
                 value={password2}
                 secureTextEntry={true}
                 color='white'
