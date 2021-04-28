@@ -65,13 +65,14 @@ export default function Login({ navigation }) {
 
             <TouchableOpacity style={styles.button} onPress={validation}>
               <LinearGradient
-                colors={[ '#ff6ec9','#bd93f9','#67ecff', ]}
-                style={styles.buttonGradient}
-              />
+                start={{ x: 0, y: 0.75 }}
+                end={{ x: 1, y: 0.25 }}
+                colors={['#67ecff', '#bd93f9', '#ff6ec9']}
+                style={styles.buttonGradient} />
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
             <View>
-              <TouchableOpacity style={{marginTop: 12}} onPress={() => navigation.navigate('Register')}>
+              <TouchableOpacity style={{ marginTop: 12 }} onPress={() => navigation.navigate('Register')}>
                 <Text style={styles.text}>Don't have an account? Sign up now!</Text>
               </TouchableOpacity>
             </View>
