@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     width: win.width * 0.42,
     borderWidth: 1,
     borderColor: '#44475a',
-    flex: 1,
+    // flex: 1,
   },
   image: {
     height: 96,
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     flex: 1,
+    
   },
   imageContainer:
   {
@@ -62,16 +63,21 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     overflow: 'hidden',
     flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#272b36',
   },
   title: {
     color: 'white',
     fontSize: 17,
+    
   },
   titleContainer: {
     paddingTop: 10,
     paddingLeft: 15,
     paddingRight: 12,
     flex: 1,
+    maxHeight: 70,
+    overflow: 'hidden',
   },
   viewsContainer: {
     flex: 1,
