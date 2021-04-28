@@ -7,7 +7,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import zIndex from '@material-ui/core/styles/zIndex';
 
 const ChatSection = React.forwardRef((props, ref) => {
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState([
+
+    ])
     const [message, setMessage] = useState('')
 
     const room = props.room;
@@ -32,11 +34,12 @@ const ChatSection = React.forwardRef((props, ref) => {
         setMessage('');
     }
 
-    const renderNoStateMessage = () => {
+    const renderMessageOfTheDay = () => {
         return (
             <Text style={styles.noStateMessage}>{room.motd}</Text>
         )
     }
+
 
     const onMessage = (content) => {
         console.log("new message from server")
@@ -101,7 +104,7 @@ const ChatSection = React.forwardRef((props, ref) => {
                     (
                         <Message message={item} deleteMessagePress={deleteMessagePress} />
                     )}
-                    ListEmptyComponent={renderNoStateMessage}
+                    ListFooterComponent={renderMessageOfTheDay}
                 />
             </View>
             <View style={styles.inputContainer}>
@@ -175,9 +178,14 @@ const styles = StyleSheet.create({
     noStateMessage:
     {
         color: 'white',
-        transform: [{ scaleY: -1 }],
-        fontSize: 15,
-        paddingLeft: 20,
-        paddingBottom: 15,
+        // transform: [{ scaleY: -1 }],
+        fontSize: 17,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#474b53',
+        borderTopWidth: 1,
+        borderTopColor: '#474b53',
+        maxHeight: 205,
     }
 });
