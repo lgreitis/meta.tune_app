@@ -148,7 +148,7 @@ export default function Playlist({ route, navigation }) {
                             <TextInput
                                 placeholder='Add song youtube ID here'
                                 onChangeText={setAddSongId}
-                                placeholderTextColor='#6272a4'
+                                placeholderTextColor='#7d8bb5'
                                 value={addSongId}
                                 color='white'
                             />

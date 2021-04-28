@@ -214,7 +214,7 @@ export default function Home({ navigation }) {
             <TextInput
               placeholder='Search rooms'
               onChangeText={setSearchText}
-              placeholderTextColor='#6272a4'
+              placeholderTextColor='#7d8bb5'
               value={searchText}
               color='white'
               ref={inputRef}

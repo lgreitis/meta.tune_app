@@ -111,7 +111,7 @@ const ChatSection = React.forwardRef((props, ref) => {
                 <TextInput
                     style={styles.input}
                     placeholder='Type something...'
-                    placeholderTextColor='#646c8d'
+                    placeholderTextColor='#7d8bb5'
                     onChangeText={(val) => setMessage(val)}
                     onSubmitEditing={submitHandler}
                     color='white'

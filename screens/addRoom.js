@@ -66,7 +66,7 @@ export default function AddRoom({ route, navigation }) {
                             <TextInput
                                 placeholder='Room name'
                                 onChangeText={setRoomName}
-                                placeholderTextColor='#6272a4'
+                                placeholderTextColor='#7d8bb5'
                                 value={roomName}
                                 color='white'
                                 autoCorrect={false}
@@ -76,7 +76,7 @@ export default function AddRoom({ route, navigation }) {
                             <TextInput
                                 placeholder='Description'
                                 onChangeText={setDescription}
-                                placeholderTextColor='#6272a4'
+                                placeholderTextColor='#7d8bb5'
                                 value={description}
                                 color='white'
                             />
@@ -85,7 +85,7 @@ export default function AddRoom({ route, navigation }) {
                             <TextInput
                                 placeholder='Message of the day'
                                 onChangeText={setMessageOfTheDay}
-                                placeholderTextColor='#6272a4'
+                                placeholderTextColor='#7d8bb5'
                                 value={messageOfTheDay}
                                 color='white'
                             />
