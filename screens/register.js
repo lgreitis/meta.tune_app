@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TextInput,
-   TouchableWithoutFeedback, Keyboard, Touchable, 
-   TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import {
+  StyleSheet, View, Text, Image, TextInput,
+  TouchableWithoutFeedback, Keyboard, Touchable,
+  TouchableOpacity, KeyboardAvoidingView
+} from 'react-native';
 import Button from '../components/button';
 import FlashMessage from "react-native-flash-message";
 import { alertContext } from '../context/alertContext';
@@ -17,60 +19,50 @@ export default function Register({ navigation }) {
 
   const alert = React.useContext(alertContext);
 
-  const validation = () =>
-  {
+  const validation = () => {
     let userNameRegExp = /\W+/
     let emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     let passwordRegExp = /[^*.!@#$%^&(){}[\]:;<>,.?/~_+-=|a-zA-Z0-9]+/
 
-    if(!username || !email || !password || !password2)
-    {
+    if (!username || !email || !password || !password2) {
       alert('Please enter all fields');
       return;
     }
 
-    if(username.length < 5)
-    {
+    if (username.length < 5) {
       alert("Name should be at least 5 characters");
       return;
     }
-    if(username.length > 32)
-    {
+    if (username.length > 32) {
       alert("Name should be no longer than 32 characters");
       return;
     }
-    if(userNameRegExp.test(username))
-    {
+    if (userNameRegExp.test(username)) {
       alert("Name contains illegal characters");
       return;
     }
 
-    if(!emailRegExp.test(email))
-    {
+    if (!emailRegExp.test(email)) {
       alert("Email is invalid");
       return;
     }
 
-    if(password.length < 6)
-    {
+    if (password.length < 6) {
       alert("Password should be at least 6 characters long");
       return;
     }
-    
-    if(password.length > 32)
-    {
+
+    if (password.length > 32) {
       alert("Password should be no longer than 32 characters");
       return;
     }
 
-    if(password != password2)
-    {
+    if (password != password2) {
       alert("Passwords don't match");
       return;
     }
 
-    if(passwordRegExp.test(password))
-    {
+    if (passwordRegExp.test(password)) {
       alert("Password contains illegal characters");
       return;
     }
@@ -86,63 +78,64 @@ export default function Register({ navigation }) {
     >
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
-          <Image
-            style={{ width: 250, height: 250, alignSelf: 'center', }}
-            source={require('../Logo/Meta.Tunetransparent.png')}
-          />
-          <View style={styles.textInput}>
-            <TextInput
-              placeholder='Username'
-              onChangeText={setUsername}
-              placeholderTextColor='#6272a4'
-              value={username}
-              color='white'
-              textContentType='username'
+          <View style={styles.imageContainer}>
+            <Image
+              style={{ width: 250, height: 200, alignSelf: 'center', }}
+              source={require('../Logo/Meta.Tunetransparent.png')}
             />
           </View>
-          <View style={styles.textInput}>
-            <TextInput
-              placeholder='E-mail'
-              onChangeText={setEmail}
-              placeholderTextColor='#6272a4'
-              value={email}
-              color='white'
-              textContentType='emailAddress'
-            />
-          </View>
-          <View style={styles.textInput}>
-            <TextInput
-              placeholder='Password'
-              onChangeText={setPassword}
-              placeholderTextColor='#6272a4'
-              value={password}
-              secureTextEntry={true}
-              color='white'
-              textContentType='password'
-            />
-          </View>
-          <View style={styles.textInput}>
-            <TextInput
-              placeholder='Confirm password'
-              onChangeText={setPassword2}
-              placeholderTextColor='#6272a4'
-              value={password2}
-              secureTextEntry={true}
-              color='white'
-              textContentType='password'
-            />
-          </View>
-          <Button
-            onPress={validation}
-            title='Sign Up'
-            backgroundColor='#bd93f9'
-          />
-          <View>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-              <Text style={styles.text}>Have an account? Log in!</Text>
+          <View style={styles.formContainer}>
+            <View style={styles.textInput}>
+              <TextInput
+                placeholder='Username'
+                onChangeText={setUsername}
+                placeholderTextColor='#6272a4'
+                value={username}
+                color='white'
+                textContentType='username'
+              />
+            </View>
+            <View style={styles.textInput}>
+              <TextInput
+                placeholder='E-mail'
+                onChangeText={setEmail}
+                placeholderTextColor='#6272a4'
+                value={email}
+                color='white'
+                textContentType='emailAddress'
+              />
+            </View>
+            <View style={styles.textInput}>
+              <TextInput
+                placeholder='Password'
+                onChangeText={setPassword}
+                placeholderTextColor='#6272a4'
+                value={password}
+                secureTextEntry={true}
+                color='white'
+                textContentType='password'
+              />
+            </View>
+            <View style={styles.textInput}>
+              <TextInput
+                placeholder='Confirm password'
+                onChangeText={setPassword2}
+                placeholderTextColor='#6272a4'
+                value={password2}
+                secureTextEntry={true}
+                color='white'
+                textContentType='password'
+              />
+            </View>
+            <TouchableOpacity style={styles.button} onPress={validation}>
+              <Text style={styles.buttonText}>Sign up</Text>
             </TouchableOpacity>
+            <View>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Text style={styles.text}>Have an account? Log in!</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          
         </View>
       </TouchableWithoutFeedback>
       <FlashMessage position="top" />
@@ -152,20 +145,27 @@ export default function Register({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingHorizontal: 20,
     backgroundColor: '#282a36',
-    flex: 1,
     justifyContent: 'center',
+    flex: 1,
   },
   textInput: {
     backgroundColor: '#44475a',
     marginBottom: 10,
     marginHorizontal: 10,
     paddingHorizontal: 20,
-    paddingVertical: 10,
     borderRadius: 25,
+    height: 38,
+    justifyContent: 'center'
   },
-
+  imageContainer: {
+    flexShrink: 1,
+  },
+  formContainer: {
+    backgroundColor: '#282a36',
+    paddingTop: 10,
+  },
   text: {
     color: '#6272a4',
     marginBottom: 10,
@@ -174,4 +174,17 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignSelf: 'center',
   },
+  buttonText: {
+    color: 'white',
+    alignSelf: 'center',
+    fontSize: 21,
+    fontWeight: 'bold'
+  },
+  button: {
+    backgroundColor: '#bd93f9',
+    marginHorizontal: 10,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center'
+  }
 });
