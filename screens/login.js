@@ -6,6 +6,7 @@ import {
 import Button from '../components/button';
 import { authContext } from '../context/AuthContext';
 import { alertContext } from '../context/alertContext';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 export default function Login({ navigation }) {
@@ -23,12 +24,16 @@ export default function Login({ navigation }) {
     signIn({ email, password })
   }
   return (
+
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
+
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.container}>
+
+        <View style={styles.contentContainer}>
+
           <View style={styles.imageContainer}>
             <Image
               style={{ width: 250, height: 200, alignSelf: 'center', }}
@@ -57,11 +62,16 @@ export default function Login({ navigation }) {
                 color='white'
               />
             </View>
+
             <TouchableOpacity style={styles.button} onPress={validation}>
-              <Text style={styles.buttonText}>Log in</Text>
+              <LinearGradient
+                colors={[ '#ff6ec9','#bd93f9','#67ecff', ]}
+                style={styles.buttonGradient}
+              />
+              <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
             <View>
-              <TouchableOpacity style={{}} onPress={() => navigation.navigate('Register')}>
+              <TouchableOpacity style={{marginTop: 12}} onPress={() => navigation.navigate('Register')}>
                 <Text style={styles.text}>Don't have an account? Sign up now!</Text>
               </TouchableOpacity>
             </View>
@@ -74,10 +84,22 @@ export default function Login({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    // padding: 20,
     backgroundColor: '#282a36',
     flex: 1,
     justifyContent: 'center',
+  },
+  contentContainer: {
+    // backgroundColor: '#282a36',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: '100%'
   },
   textInput: {
     backgroundColor: '#44475a',
@@ -104,6 +126,7 @@ const styles = StyleSheet.create({
   formContainer: {
     backgroundColor: '#282a36',
     paddingTop: 10,
+    paddingHorizontal: 40,
   },
   buttonText: {
     color: 'white',
@@ -112,10 +135,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   button: {
-    backgroundColor: '#bd93f9',
+    // backgroundColor: '#bd93f9',
     marginHorizontal: 10,
-    height: 50,
+    height: 40,
     borderRadius: 25,
     justifyContent: 'center'
+  },
+  buttonGradient: {
+    // backgroundColor: '#bd93f9',
+    // marginHorizontal: 10,
+    height: 50,
+    marginBottom: -40,
+    borderRadius: 25,
+    // justifyContent: 'center'
+    alignItems: 'center'
   }
 });

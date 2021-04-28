@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   alertButton: {
     backgroundColor: '#bd93f9',
     height: 50,
-    width: '80%',
+    width: '50%',
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',

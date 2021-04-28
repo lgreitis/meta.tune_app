@@ -8,6 +8,7 @@ import Button from '../components/button';
 import FlashMessage from "react-native-flash-message";
 import { alertContext } from '../context/alertContext';
 import { authContext } from '../context/AuthContext';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Register({ navigation }) {
   const [email, setEmail] = useState('');
@@ -128,10 +129,14 @@ export default function Register({ navigation }) {
               />
             </View>
             <TouchableOpacity style={styles.button} onPress={validation}>
+              <LinearGradient
+                colors={['#ff6ec9', '#bd93f9', '#67ecff',]}
+                style={styles.buttonGradient}
+              />
               <Text style={styles.buttonText}>Sign up</Text>
             </TouchableOpacity>
             <View>
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <TouchableOpacity style={{marginTop: 12}}onPress={() => navigation.navigate("Login")}>
                 <Text style={styles.text}>Have an account? Log in!</Text>
               </TouchableOpacity>
             </View>
@@ -181,10 +186,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   button: {
-    backgroundColor: '#bd93f9',
+    // backgroundColor: '#bd93f9',
     marginHorizontal: 10,
-    height: 50,
+    height: 40,
     borderRadius: 25,
     justifyContent: 'center'
+  },
+  buttonGradient: {
+    // backgroundColor: '#bd93f9',
+    // marginHorizontal: 10,
+    height: 50,
+    marginBottom: -40,
+    borderRadius: 25,
+    // justifyContent: 'center'
+    alignItems: 'center'
   }
 });
