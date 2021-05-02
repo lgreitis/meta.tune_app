@@ -216,7 +216,7 @@ const PlayerSection = React.forwardRef((props, ref) => {
           />
         </View>
 
-        {name == props.room.creator.name ?
+        {name == props.room.creator && isPlaying?
           <View style={styles.buttonContainer}>
             <Button
               title='skip'

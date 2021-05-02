@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 30,
         position: 'absolute',
-        top: '50%',
+        top: '55%',
     },
     backIcon: {
         left: 16,

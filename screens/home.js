@@ -75,17 +75,18 @@ export default function Home({ navigation }) {
     setRefreshing(true)
 
     roomUtils.getRooms((serverRooms) => {
+      
       serverRooms.map(room => {
+        let playingSongId = room.mediaId == "false"? false : room.mediaId;
         rooms.push({
           key: key,
           roomName: room.name,
-          url: 'https://img.youtube.com/vi/DWcJFNfaw9c/hqdefault.jpg',
-          viewersCount: Math.floor(Math.random() * 100) + 1,
+          url: playingSongId,
+          viewersCount: 2,
           favorite: false,
-          slug: room.slug,
-          desc: room.desc,
           motd: room.motd,
-          creator: room.creator,
+          slug: room.slug,
+          creator: room.creatorName,
         })
         key++;
       })
@@ -169,9 +170,6 @@ export default function Home({ navigation }) {
           style={[styles.container]}
           keyboardVerticalOffset={Platform.select({ ios: 0, android: -50 })}
         >
-
-
-
           <View style={styles.header}>
             <MaterialIcons name="search" style={[styles.icon, styles.searchIcon]} onPress={searchPress} />
             <Text style={styles.headerText}>{"Home"}</Text>
@@ -240,7 +238,6 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: '#44475a',
-
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 25,
@@ -275,7 +272,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: screen.height * 0.1,
+    height: screen.height * 0.10,
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: '#44475a',
@@ -292,7 +289,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
     position: 'absolute',
-    top: '55%',
+    top: '60%',
   },
   menuIcon: {
     right: 16

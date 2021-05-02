@@ -4,11 +4,16 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 
 export default function Room({ pressHandler, item, toggleFavorite }) {
+
   return (
     <TouchableOpacity onPress={() => pressHandler(item.key)}>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image source={{ uri: item.url }} style={styles.image} />
+          {item.url ?
+            <Image source={{ uri: 'https://img.youtube.com/vi/' + item.url +'/hqdefault.jpg' }} style={styles.image} />
+            :
+            <Image source={require('../Logo/mticon.png')} style={styles.image} />
+          }
         </View>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{item.roomName}</Text>
@@ -54,11 +59,11 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     flex: 1,
-    
+
   },
   imageContainer:
   {
-    backgroundColor: '#43485b',
+    backgroundColor: '#272b36',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     overflow: 'hidden',
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontSize: 17,
-    
+
   },
   titleContainer: {
     paddingTop: 10,

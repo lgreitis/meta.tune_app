@@ -15,7 +15,7 @@ export default props => {
     const returnSongId = () => {
         let songId = ''
         if (selectedKey !== null) {
-            songId = songs[selectedKey - 1].id;
+            songId = songs[selectedKey - 1].key -1;
         }
         setSelectedKey(null)
 
