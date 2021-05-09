@@ -17,7 +17,8 @@ export default props => {
     });
   };
   close = (songId) => {
-    if(songId)
+    console.log("songId:" + songId);
+    if(songId !== "")
       DeviceEventEmitter.emit("userSongRequest", songId)
     setPlaylistState(initialState);
   };
