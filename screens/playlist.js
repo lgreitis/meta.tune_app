@@ -65,14 +65,14 @@ export default function Playlist({ route, navigation }) {
             console.log(status)
             switch (status) {
                 case 200:
-                    alert('Song deleted!\n' + songs[key - 1].title)
+                    alert('Song deleted!\n' + songs[key - 1].title, 'OK', 'songdelete')
                     getSongs();
                     return;
                 case 401:
                     alert('Not logged in :(')
                     return;
                 case 500:
-                    alert('Server made an oopsy');
+                    alert('Server made an oopsy', ':(');
                     return;
                 default:
                     alert('Something went wrong')
@@ -108,7 +108,7 @@ export default function Playlist({ route, navigation }) {
                 console.log(status)
                 switch (status) {
                     case 201:
-                        alert('Song added!\n' + meta.title)
+                        alert('Song added!\n' + meta.title, 'OK', 'songadd')
                         Keyboard.dismiss()
                         setAddSongId('')
                         getSongs();
@@ -120,7 +120,7 @@ export default function Playlist({ route, navigation }) {
                         alert('Song already exists');
                         return;
                     case 406:
-                        alert('Song is too long or age restricted')
+                        alert('Song is too long or age restricted', 'OK', 'toolong')
                         return;
                     default:
                         console.log("something went wrong")

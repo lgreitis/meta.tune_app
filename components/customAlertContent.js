@@ -26,6 +26,47 @@ export default props => {
             </View>
         );
     }
+    else if (name == 'songadd') {
+        return (
+            <View style={styles.alertMessageContainer}>
+                <Text style={styles.alertMessage}> {message} </Text>
+                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <Emoji name="musical_note" style={styles.emoji} />
+                    <Emoji name="point_up" style={styles.emoji} />
+                </View>
+            </View>
+        );
+    }
+    else if (name == 'toolong') {
+        return (
+            <View style={styles.alertMessageContainer}>
+                <Text style={styles.alertMessage}> {message} </Text>
+                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <Emoji name="underage" style={styles.emoji} />
+                    <Emoji name="performing_arts" style={styles.emoji} />
+                </View>
+            </View>
+        );
+    }
+    else if (name == 'songdelete') {
+        return (
+            <View style={styles.alertMessageContainer}>
+                <Text style={styles.alertMessage}> {message} </Text>
+                <Emoji name="wastebasket" style={styles.emoji} />
+            </View>
+        );
+    }
+    else if (name == 'loggedin') {
+        return (
+            <View style={styles.alertMessageContainer}>
+                <Text style={styles.alertMessage}> {message} </Text>
+                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <Emoji name="guitar" style={styles.emoji} />
+                    <Emoji name="musical_keyboard" style={styles.emoji} />
+                </View>
+            </View>
+        );
+    }
     else{
         return (
             <View style={styles.alertMessageContainer}>

@@ -17,16 +17,17 @@ export default props => {
         loginUtils.submitHandler(data.email, data.password, (res) => {
           if (res.success === true) {
             DeviceEventEmitter.emit('login', { name: res.name});
+            alert("Logged in!", "OK", 'loggedin');
           }
           else {
             if (res.message == "Password incorrect") {
-              alert("Incorrect password.")
+              alert("Password incorrect")
             }
             else if (res.message == "That email is not registered") {
-              alert("This email is not registered")
+              alert("Email is not registered")
             }
             else {
-              alert("Something went wrong on the server")
+              alert("Something went wrong on the server :/")
             }
           }
         })
